@@ -1,0 +1,39 @@
+fr24-card {
+    table {
+        width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+
+        tr:nth-child(even) {
+            background-color: var(--primary-background-color);
+        }
+
+        tr th, tr td {
+            padding: 4px;
+            text-align: left;
+
+            &.align-right {
+                text-align: right;
+            }
+
+            &.width-s {
+                width: 20px;
+            }
+        }
+
+        tr th {
+            background-color: var(--primary-color);
+            color: var(--app-header-text-color, white);
+        }
+
+        tr td {
+            img {
+                width: 20px;
+            }
+        }
+
+        tr[data-hex] {
+            cursor: pointer;
+        }
+    }
+}

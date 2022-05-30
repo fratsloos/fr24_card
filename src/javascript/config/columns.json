@@ -1,0 +1,53 @@
+{
+  "icon": {
+    "styles": ["width-s"],
+    "weight": 1,
+    "popup": false
+  },
+  "icao": {
+    "weight": 2,
+    "popup": true
+  },
+  "flag": {
+    "styles": ["width-s"],
+    "weight": 1,
+    "popup": false
+  },
+  "country": {
+    "weight": 4,
+    "popup": true
+  },
+  "registration": {
+    "weight": 4,
+    "popup": true
+  },
+  "flight": {
+    "weight": 2,
+    "popup": true
+  },
+  "squawk": {
+    "weight": 2,
+    "popup": true
+  },
+  "altitude": {
+    "styles": ["align-right"],
+    "weight": 2,
+    "popup": true
+  },
+  "speed": {
+    "styles": ["align-right"],
+    "weight": 2,
+    "popup": true
+  },
+  "distance": {
+    "styles": ["align-right"],
+    "unit": "m",
+    "weight": 2,
+    "popup": true
+  },
+  "track": {
+    "styles": ["align-right"],
+    "weight": 2,
+    "popup": true
+  }
+}

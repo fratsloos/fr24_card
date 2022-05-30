@@ -1,0 +1,23 @@
+{
+  "table": {
+    "head": {
+      "icao": "ICAO Code",
+      "country": "Country",
+      "registration": "Registration",
+      "flight": "Flight",
+      "squawk": "Squawk",
+      "altitude": "Altitude",
+      "speed": "Speed",
+      "distance": "Distance",
+      "track": "Track"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Property",
+        "value": "Value"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "table": {
+    "head": {
+      "icao": "ICAO code",
+      "country": "Land",
+      "registration": "Registratie",
+      "flight": "Vlucht",
+      "squawk": "Squawk",
+      "altitude": "Hoogte",
+      "speed": "Snelheid",
+      "distance": "Afstand",
+      "track": "Richting"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Eigenschap",
+        "value": "Waarde"
+      }
+    }
+  }
+}
