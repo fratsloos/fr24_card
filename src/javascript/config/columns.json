@@ -41,7 +41,6 @@
   },
   "distance": {
     "styles": ["align-right"],
-    "unit": "m",
     "weight": 2,
     "popup": true
   },
