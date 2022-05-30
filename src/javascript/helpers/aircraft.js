@@ -1,4 +1,5 @@
 import ICAO from "./icao.js";
+import Lang from "./lang.js";
 
 export default class Aircraft {
   constructor(state, config, distance) {
@@ -63,8 +64,11 @@ export default class Aircraft {
           altitude: "m",
           distance: "m",
           speed: "km/h",
-          track: "°",
         };
+
+        if (this.config.track_in_text !== true) {
+          this.units.track = "°";
+        }
         break;
 
       default:
@@ -74,6 +78,10 @@ export default class Aircraft {
           speed: "kt",
           track: "°",
         };
+
+        if (this.config.track_in_text !== true) {
+          this.units.track = "°";
+        }
         break;
     }
   };
@@ -82,10 +90,10 @@ export default class Aircraft {
    * Returns the value of the aircraft property based on the requested key
    *
    * @param {String} key Key of the column to parse
-   * @param {Boolean} withUnit Indicating if the value should be return with the unit
+   * @param {Boolean} inPopup Indicating if the value is shown in the popup, returning different data
    * @returns {String} Value of the table cell, can be HTML
    */
-  value = function (key, withUnit) {
+  value = function (key, inPopup) {
     let aircraft = this;
     let unit = this.units[key] ?? null;
 
@@ -112,7 +120,7 @@ export default class Aircraft {
               break;
           }
 
-          if (withUnit) {
+          if (inPopup) {
             speed += " " + unit;
           }
         }
@@ -130,24 +138,72 @@ export default class Aircraft {
               break;
           }
 
-          if (withUnit) {
+          if (inPopup) {
             altitude += " " + unit;
           }
         }
 
         return altitude;
 
+      case "track":
+        let track = aircraft.track ?? "";
+
+        if (track !== "") {
+          if (this.config.track_in_text === true) {
+            // Return as text
+            track = this.trackAsText(track, inPopup);
+          } else {
+            // Return in degrees, with unit
+            if (inPopup) {
+              track += "" + unit;
+            }
+          }
+        }
+
+        return track;
+
       default:
         let value = aircraft[key] ?? "";
 
-        if (withUnit && value !== "" && unit !== null) {
-          if (key !== "track") {
-            value += " ";
-          }
-          value += unit;
+        if (inPopup && value !== "" && unit !== null) {
+          value += " " + unit;
         }
 
         return value;
     }
+  };
+
+  /**
+   * Returns the textual value of the track
+   *
+   * @param {Number} track Track in degrees
+   * @param {Boolean} inPopup Indicating if the track is shown in the popup, returning longer text
+   * @returns
+   */
+  trackAsText = function (track, inPopup) {
+    // Set lang
+    const lang = new Lang(this.config.lang);
+
+    let key = "n";
+
+    if (track >= 11.25 && track <= 33.75) key = "nne";
+    else if (track >= 33.75 && track <= 56.25) key = "ne";
+    else if (track >= 56.25 && track <= 78.75) key = "ene";
+    else if (track >= 78.75 && track <= 101.25) key = "e";
+    else if (track >= 101.25 && track <= 123.75) key = "ese";
+    else if (track >= 123.75 && track <= 146.25) key = "se";
+    else if (track >= 146.25 && track <= 168.75) key = "sse";
+    else if (track >= 168.75 && track <= 191.25) key = "s";
+    else if (track >= 191.25 && track <= 213.75) key = "ssw";
+    else if (track >= 213.75 && track <= 236.25) key = "sw";
+    else if (track >= 236.25 && track <= 258.75) key = "wsw";
+    else if (track >= 258.75 && track <= 281.25) key = "w";
+    else if (track >= 281.25 && track <= 303.75) key = "wnw";
+    else if (track >= 303.75 && track <= 326.25) key = "nw";
+    else if (track >= 326.25 && track <= 348.75) key = "nnw";
+
+    return inPopup
+      ? lang.content.track.long[key]
+      : lang.content.track.short[key];
   };
 }

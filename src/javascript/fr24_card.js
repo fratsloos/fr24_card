@@ -67,6 +67,7 @@ class Fr24Card extends HTMLElement {
       lang: "en",
       popup: false,
       units: "default",
+      track_in_text: false,
     };
 
     // Overwrite config
