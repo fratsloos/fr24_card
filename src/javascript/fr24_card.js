@@ -118,7 +118,7 @@ class Fr24Card extends HTMLElement {
       const stylesheet = document.createElement("link");
       stylesheet.setAttribute("type", "text/css");
       stylesheet.setAttribute("rel", "stylesheet");
-      stylesheet.setAttribute("href", "/local/fr24card/dist/fr24_card.css");
+      stylesheet.setAttribute("href", "/local/fr24card/fr24_card.css");
       this.card.appendChild(stylesheet);
 
       // Load aircraft database
@@ -128,7 +128,7 @@ class Fr24Card extends HTMLElement {
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", "/local/fr24card/dist/fr24_database.js");
+        script.setAttribute("src", "/local/fr24card/fr24_database.js");
 
         document.head.appendChild(script);
       }

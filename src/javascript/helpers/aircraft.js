@@ -25,7 +25,7 @@ export default class Aircraft {
     // Set flag based on ICAO data
     this.flag =
       country !== null && country.iso_3166_1 !== null
-        ? "/local/fr24card/dist/images/flags/" +
+        ? "/local/fr24card/images/flags/" +
           country.iso_3166_1.toLowerCase() +
           ".svg"
         : null;
