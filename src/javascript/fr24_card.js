@@ -129,17 +129,11 @@ class Fr24Card extends HTMLElement {
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
         script.setAttribute("src", "/local/fr24card/fr24_database.js");
-
         document.head.appendChild(script);
       }
 
       // Setup is complete
-      setTimeout(
-        () => {
-          this.setupComplete = true;
-        },
-        loadAircraftdb ? 2500 : 150
-      );
+      this.setupComplete = true;
     }
 
     // Update header of the card
