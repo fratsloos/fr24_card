@@ -156,6 +156,7 @@ class Fr24Card extends HTMLElement {
    * Parses the data retrieved from the entity in to an usable object
    */
   _parseAircrafts() {
+    const fr24 = this;
     this._aircrafts = [];
     const states =
       this._hass.states[this._config.entity].attributes[this._config.attribute];
@@ -185,21 +186,15 @@ class Fr24Card extends HTMLElement {
 
     // Sort aircrafts
     this._aircrafts.sort(function (a, b) {
-      // if (this._config.columns.includes(this._config.sort)) {
-      //   return (
-      //     a[this._config.sort] !== "" &&
-      //     a[this._config.sort] > b[this._config.sort]
-      //   );
-      // }
+      let column = fr24._config.sort || "distance";
 
-      // Sort on distance
-      if (a.distance === null || a.distance === "") {
+      if (a[column] === null || a[column] === "") {
         return true;
-      } else if (b.distance === null || b.distance === "") {
+      } else if (b[column] === null || b[column] === "") {
         return false;
       }
 
-      return a.distance > b.distance;
+      return a[column] > b[column];
     });
   }
 
