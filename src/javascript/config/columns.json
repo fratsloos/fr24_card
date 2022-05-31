@@ -48,5 +48,10 @@
     "styles": ["align-right"],
     "weight": 2,
     "popup": true
+  },
+  "age": {
+    "styles": ["align-right"],
+    "weight": 3,
+    "popup": true
   }
 }

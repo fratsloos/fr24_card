@@ -52,7 +52,7 @@ class Fr24Card extends HTMLElement {
       attribute: "aircraft",
       zone: null,
       hide: {
-        withOutFlight: true,
+        old_messages: true,
       },
       columns: [
         "flag",
@@ -172,10 +172,7 @@ class Fr24Card extends HTMLElement {
       let aircraft = new Aircraft(state, this._config, this._distance);
       let addToAircrafts = true;
 
-      if (
-        this._config.hide.withOutFlight === true &&
-        aircraft.flight === null
-      ) {
+      if (this._config.hide.old_messages !== false && aircraft.seen > 30) {
         addToAircrafts = false;
       }
 

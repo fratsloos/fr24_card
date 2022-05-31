@@ -9,7 +9,8 @@
       "altitude": "Altitude",
       "speed": "Speed",
       "distance": "Distance",
-      "track": "Track"
+      "track": "Track",
+      "age": "Message age"
     }
   },
   "popup": {

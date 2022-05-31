@@ -16,6 +16,7 @@ export default class Aircraft {
     this.vert_rate = state.vert_rate ?? null;
     this.lat = state.lat ?? null;
     this.lon = state.lon ?? null;
+    this.seen = state.seen ?? 100;
 
     // ICAO data
     const icao = new ICAO();
@@ -64,6 +65,7 @@ export default class Aircraft {
           altitude: "m",
           distance: "m",
           speed: "km/h",
+          age: "s",
         };
 
         if (this.config.track_in_text !== true) {
@@ -77,6 +79,7 @@ export default class Aircraft {
           distance: "NM",
           speed: "kt",
           track: "°",
+          age: "s",
         };
 
         if (this.config.track_in_text !== true) {
@@ -108,6 +111,17 @@ export default class Aircraft {
 
       case "icao":
         return aircraft.hex;
+
+      case "age":
+        let age = aircraft.seen ?? "";
+
+        if (age !== "") {
+          if (inPopup) {
+            age += " " + unit;
+          }
+        }
+
+        return age;
 
       case "speed":
         let speed = aircraft.speed ?? "";
