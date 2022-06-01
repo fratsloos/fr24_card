@@ -69,7 +69,6 @@ class Fr24Card extends HTMLElement {
       units: "default",
       larger_units: false,
       units_in_table: false,
-      footer: false,
     };
 
     // Overwrite config
