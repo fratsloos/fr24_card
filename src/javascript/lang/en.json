@@ -10,7 +10,7 @@
       "speed": "Speed",
       "distance": "Distance",
       "track": "Track",
-      "age": "Message age"
+      "age": "Last message"
     }
   },
   "popup": {
