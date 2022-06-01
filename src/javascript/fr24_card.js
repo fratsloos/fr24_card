@@ -67,6 +67,7 @@ class Fr24Card extends HTMLElement {
       lang: "en",
       popup: false,
       units: "default",
+      larger_units: false,
       track_in_text: false,
     };
 

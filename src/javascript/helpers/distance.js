@@ -3,6 +3,7 @@
  */
 export default class Distance {
   constructor(config, hass) {
+    this.config = config;
     this.zone = config.zone;
     this.units = config.units;
     this.hass = hass;
@@ -49,6 +50,13 @@ export default class Distance {
 
     // Convert distance to configures unit
     switch (this.units) {
+      case "metric":
+        if (this.config.larger_units) {
+          // In km
+          d = Math.round((d / 1000) * 10) / 10;
+        }
+        break;
+
       case "default":
         // In Nautical Miles
         d = Math.round(d * 0.000539956803 * 10) / 10;

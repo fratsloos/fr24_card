@@ -61,13 +61,23 @@ export default class Aircraft {
   setUnits = function () {
     switch (this.config.units) {
       case "metric":
-        this.units = {
-          altitude: "m",
-          distance: "m",
-          speed: "km/h",
-          age: "s",
-        };
+        if (this.config.larger_units === true) {
+          // Units in kilometer
+          this.units = {
+            altitude: "km",
+            distance: "km",
+            speed: "km/h",
+          };
+        } else {
+          // Units in meter
+          this.units = {
+            altitude: "m",
+            distance: "m",
+            speed: "m/s",
+          };
+        }
 
+        this.units.age = "s";
         if (this.config.track_in_text !== true) {
           this.units.track = "°";
         }
@@ -129,8 +139,14 @@ export default class Aircraft {
         if (speed !== "") {
           switch (this.config.units) {
             case "metric":
-              // Speed in km/h
-              speed = Math.round(speed * 1.852);
+              if (this.config.larger_units) {
+                // Speed in km/h
+                speed = Math.round(speed * 1.852);
+              } else {
+                // Speed in m/s
+                speed = Math.round(speed * 0.514444444);
+              }
+
               break;
           }
 
@@ -147,8 +163,14 @@ export default class Aircraft {
         if (altitude !== "") {
           switch (this.config.units) {
             case "metric":
-              // Altitude in m
-              altitude = Math.round(altitude * 0.3048);
+              if (this.config.larger_units) {
+                // Altitude in km
+                altitude = Math.round(((altitude * 0.3048) / 1000) * 10) / 10;
+              } else {
+                // Altitude in m
+                altitude = Math.round(altitude * 0.3048);
+              }
+
               break;
           }
 
