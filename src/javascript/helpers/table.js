@@ -7,9 +7,11 @@ export default class Table {
     this.table = document.createElement("table");
     this.thead = document.createElement("thead");
     this.tbody = document.createElement("tbody");
+    this.tfoot = document.createElement("tfoot");
 
     this.hasRowsInHead = false;
     this.hasRowsInBody = false;
+    this.hasRowsInFoot = false;
   }
 
   /**
@@ -24,6 +26,10 @@ export default class Table {
 
     if (this.hasRowsInBody) {
       this.table.appendChild(this.tbody);
+    }
+
+    if (this.hasRowsInFoot) {
+      this.table.appendChild(this.tfoot);
     }
 
     return this.table.outerHTML;
@@ -53,7 +59,11 @@ export default class Table {
         this.thead.appendChild(row.element);
         this.hasRowsInHead = true;
         break;
-      case "thead":
+      case "tfoot":
+        this.tfoot.appendChild(row.element);
+        this.hasRowsInFoot = true;
+        break;
+      case "tbody":
       default:
         this.tbody.appendChild(row.element);
         this.hasRowsInBody = true;

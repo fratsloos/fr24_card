@@ -68,7 +68,8 @@ class Fr24Card extends HTMLElement {
       popup: false,
       units: "default",
       larger_units: false,
-      track_in_text: false,
+      units_in_table: false,
+      footer: false,
     };
 
     // Overwrite config
@@ -202,9 +203,11 @@ class Fr24Card extends HTMLElement {
   _renderTable() {
     // Create a new table
     const table = new Table();
+    const needsUnits = this._config.units_in_table === true;
+    let hasUnits = false;
 
     // Header
-    let cells = [];
+    let headerCells = [];
 
     this._config.columns.forEach((key) => {
       // Get column from the available columns
@@ -222,14 +225,41 @@ class Fr24Card extends HTMLElement {
       let styles = column.styles ?? null;
 
       // Push header cell
-      cells.push(table.cell(value, styles, "th"));
+      headerCells.push(table.cell(value, styles, "th"));
     });
 
     // Add header row
-    table.row(cells, "thead");
+    table.row(headerCells, "thead");
 
     // Body
     this._aircrafts.forEach((aircraft) => {
+      // First aircraft add units in table
+      if (needsUnits && !hasUnits) {
+        hasUnits = true;
+
+        let unitCells = [];
+        this._config.columns.forEach((key) => {
+          // Get column from the available columns
+          let column = this._availableColumns[key];
+
+          // Check if column is visible
+          if (column.show === false) {
+            return;
+          }
+
+          // Content of the cell
+          let value = aircraft.units[key] ?? "";
+
+          // Styles of the cell
+          let styles = column.styles ?? null;
+
+          // Push header cell
+          unitCells.push(table.cell(value, styles, "td"));
+        });
+        table.row(unitCells, "thead");
+      }
+
+      // Add aircraft
       let cells = [];
 
       this._config.columns.forEach((key) => {
