@@ -9,7 +9,8 @@
       "altitude": "Hoogte",
       "speed": "Snelheid",
       "distance": "Afstand",
-      "track": "Richting"
+      "track": "Richting",
+      "age": "Laatste bericht"
     }
   },
   "popup": {
@@ -18,6 +19,44 @@
         "property": "Eigenschap",
         "value": "Waarde"
       }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNO",
+      "ne": "NO",
+      "ene": "ONO",
+      "e": "O",
+      "ese": "OZO",
+      "se": "ZO",
+      "sse": "ZZO",
+      "s": "Z",
+      "ssw": "ZZW",
+      "sw": "ZW",
+      "wsw": "WZW",
+      "w": "W",
+      "wnw": "WNW",
+      "nw": "NW",
+      "nnw": "NNW"
+    },
+    "long": {
+      "n": "Noord",
+      "nne": "Noordnoordoost",
+      "ne": "Noordoost",
+      "ene": "Oostnoordoost",
+      "e": "Oost",
+      "ese": "Oostzuidoost",
+      "se": "Zuidoost",
+      "sse": "Zuidzuidoost",
+      "s": "Zuid",
+      "ssw": "Zuidzuidwest",
+      "sw": "Zuidwest",
+      "wsw": "Westzuidwest",
+      "w": "West",
+      "wnw": "Westnoordwest",
+      "nw": "Noordwest",
+      "nnw": "Noordnoordwest"
     }
   }
 }

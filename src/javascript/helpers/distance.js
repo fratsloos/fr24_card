@@ -2,12 +2,14 @@
  * Class to calculate the distance of an aircraft to the configured zone
  */
 export default class Distance {
-  constructor(zone, hass) {
-    this.zone = zone;
-    this._hass = hass;
+  constructor(config, hass) {
+    this.config = config;
+    this.zone = config.zone;
+    this.units = config.units;
+    this.hass = hass;
 
     // Set coordinates
-    if (zone !== null) {
+    if (this.zone !== null) {
       this.getCoordinatesOfZone();
     }
   }
@@ -17,7 +19,7 @@ export default class Distance {
   };
 
   getCoordinatesOfZone = function () {
-    let zone = this._hass.states[this.zone];
+    let zone = this.hass.states[this.zone];
 
     if (typeof zone !== "undefined") {
       this.lat = zone.attributes["latitude"];
@@ -45,6 +47,21 @@ export default class Distance {
         Math.sin(dLon / 2);
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     let d = Math.round(R * c); // Distance in m
+
+    // Convert distance to configures unit
+    switch (this.units) {
+      case "metric":
+        if (this.config.larger_units) {
+          // In km
+          d = Math.round((d / 1000) * 10) / 10;
+        }
+        break;
+
+      case "default":
+        // In Nautical Miles
+        d = Math.round(d * 0.000539956803 * 10) / 10;
+        break;
+    }
 
     return d;
   };

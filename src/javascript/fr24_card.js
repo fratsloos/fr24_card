@@ -28,7 +28,7 @@ class Fr24Card extends HTMLElement {
     }
 
     // Distance service
-    this._distance = new Distance(this._config.zone, this._hass);
+    this._distance = new Distance(this._config, this._hass);
 
     // Parse aircrafts
     this._parseAircrafts();
@@ -44,12 +44,15 @@ class Fr24Card extends HTMLElement {
    * @param {Object} config Config from the card
    */
   setConfig(config) {
+    // Available columns
+    this._availableColumns = availableColumns;
+
     // Default config
     const defaultConfig = {
       attribute: "aircraft",
       zone: null,
       hide: {
-        withOutFlight: true,
+        old_messages: true,
       },
       columns: [
         "flag",
@@ -63,6 +66,10 @@ class Fr24Card extends HTMLElement {
       sort: "distance",
       lang: "en",
       popup: false,
+      units: "default",
+      larger_units: false,
+      units_in_table: false,
+      track_in_text: false,
     };
 
     // Overwrite config
@@ -78,15 +85,19 @@ class Fr24Card extends HTMLElement {
 
     let totalWeight = 0;
     this._config.columns.forEach((column) => {
-      if (!availableColumns.hasOwnProperty(column)) {
+      if (!this._availableColumns.hasOwnProperty(column)) {
         throw new Error("Column '" + column + "' does not exist");
       }
 
-      totalWeight += availableColumns[column].weight;
+      totalWeight += this._availableColumns[column].weight;
     });
 
     if (totalWeight > 15) {
       throw new Error("Too many columns defined");
+    }
+
+    if (!["default", "metric"].includes(this._config.units)) {
+      throw new Error("Unit '" + this._config.units + "' not supported");
     }
 
     // Set lang
@@ -109,7 +120,7 @@ class Fr24Card extends HTMLElement {
       const stylesheet = document.createElement("link");
       stylesheet.setAttribute("type", "text/css");
       stylesheet.setAttribute("rel", "stylesheet");
-      stylesheet.setAttribute("href", "/local/fr24card/dist/fr24_card.css");
+      stylesheet.setAttribute("href", "/local/fr24card/fr24_card.css");
       this.card.appendChild(stylesheet);
 
       // Load aircraft database
@@ -119,18 +130,12 @@ class Fr24Card extends HTMLElement {
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", "/local/fr24card/dist/fr24_database.js");
-
+        script.setAttribute("src", "/local/fr24card/fr24_database.js");
         document.head.appendChild(script);
       }
 
       // Setup is complete
-      setTimeout(
-        () => {
-          this.setupComplete = true;
-        },
-        loadAircraftdb ? 2500 : 150
-      );
+      this.setupComplete = true;
     }
 
     // Update header of the card
@@ -150,28 +155,35 @@ class Fr24Card extends HTMLElement {
   }
 
   /**
+   * Returns a stub for the default card configuration
+   *
+   * @returns {Object}
+   */
+  static getStubConfig() {
+    return { entity: "sensor.fr24_aircraft" };
+  }
+
+  /**
    * Parses the data retrieved from the entity in to an usable object
    */
   _parseAircrafts() {
+    const fr24 = this;
     this._aircrafts = [];
     const states =
       this._hass.states[this._config.entity].attributes[this._config.attribute];
 
     // If no distance service, disable the column
-    availableColumns.distance.show = true;
+    this._availableColumns.distance.show = true;
     if (this._distance.isSetUp() === false) {
-      availableColumns.distance.show = false;
+      this._availableColumns.distance.show = false;
     }
 
     // Parse each aircraft
     states.forEach((state) => {
-      let aircraft = new Aircraft(state, this._distance);
+      let aircraft = new Aircraft(state, this._config, this._distance);
       let addToAircrafts = true;
 
-      if (
-        this._config.hide.withOutFlight === true &&
-        aircraft.flight === null
-      ) {
+      if (this._config.hide.old_messages !== false && aircraft.seen > 30) {
         addToAircrafts = false;
       }
 
@@ -182,21 +194,15 @@ class Fr24Card extends HTMLElement {
 
     // Sort aircrafts
     this._aircrafts.sort(function (a, b) {
-      // if (this._config.columns.includes(this._config.sort)) {
-      //   return (
-      //     a[this._config.sort] !== "" &&
-      //     a[this._config.sort] > b[this._config.sort]
-      //   );
-      // }
+      let column = fr24._config.sort || "distance";
 
-      // Sort on distance
-      if (a.distance === null || a.distance === "") {
+      if (a[column] === null || a[column] === "") {
         return true;
-      } else if (b.distance === null || b.distance === "") {
+      } else if (b[column] === null || b[column] === "") {
         return false;
       }
 
-      return a.distance > b.distance;
+      return a[column] > b[column];
     });
   }
 
@@ -206,13 +212,15 @@ class Fr24Card extends HTMLElement {
   _renderTable() {
     // Create a new table
     const table = new Table();
+    const needsUnits = this._config.units_in_table === true;
+    let hasUnits = false;
 
     // Header
-    let cells = [];
+    let headerCells = [];
 
     this._config.columns.forEach((key) => {
       // Get column from the available columns
-      let column = availableColumns[key];
+      let column = this._availableColumns[key];
 
       // Check if column is visible
       if (column.show === false) {
@@ -226,29 +234,53 @@ class Fr24Card extends HTMLElement {
       let styles = column.styles ?? null;
 
       // Push header cell
-      cells.push(table.cell(value, styles, "th"));
+      headerCells.push(table.cell(value, styles, "th"));
     });
 
     // Add header row
-    table.row(cells, "thead");
+    table.row(headerCells, "thead");
 
     // Body
     this._aircrafts.forEach((aircraft) => {
+      // First aircraft add units in table
+      if (needsUnits && !hasUnits) {
+        hasUnits = true;
+
+        let unitCells = [];
+        this._config.columns.forEach((key) => {
+          // Get column from the available columns
+          let column = this._availableColumns[key];
+
+          // Check if column is visible
+          if (column.show === false) {
+            return;
+          }
+
+          // Content of the cell
+          let value = aircraft.units[key] ?? "";
+
+          // Styles of the cell
+          let styles = column.styles ?? null;
+
+          // Push header cell
+          unitCells.push(table.cell(value, styles, "td"));
+        });
+        table.row(unitCells, "thead");
+      }
+
+      // Add aircraft
       let cells = [];
 
       this._config.columns.forEach((key) => {
         // Get column from the available columns
-        let column = availableColumns[key];
+        let column = this._availableColumns[key];
 
         // Check if column is visible
         if (column.show === false) {
           return;
         }
 
-        let cell = table.cell(
-          aircraft.value(key, column),
-          column.styles ?? null
-        );
+        let cell = table.cell(aircraft.value(key), column.styles ?? null);
 
         // Push header cell
         cells.push(cell);
@@ -277,37 +309,6 @@ class Fr24Card extends HTMLElement {
       );
     }
   }
-
-  /**
-   * Returns the value of the table cell based on the requested key
-   *
-   * @param {Object} aircraft Object with the current aircraft data
-   * @param {String} key Key of the column to parse
-   * @param {Object} column Object with the column data
-   * @returns {String} Value of the table cell, can be HTML
-   */
-  // _cellValue = function (aircraft, key, column) {
-  //   switch (key) {
-  //     case "icon":
-  //       return `<font color="#${aircraft.hex}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
-
-  //     case "flag":
-  //       if (aircraft.flag !== null) {
-  //         return `<img src="${aircraft.flag}" alt="${aircraft.country}" />`;
-  //       } else return "";
-
-  //     case "icao":
-  //       return aircraft.hex;
-
-  //     default:
-  //       let value = aircraft[key] ?? "";
-
-  //       if (value !== "" && column.hasOwnProperty("unit")) {
-  //         value += " " + column.unit;
-  //       }
-  //       return value;
-  //   }
-  // };
 }
 
 customElements.define("fr24-card", Fr24Card);

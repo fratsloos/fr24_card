@@ -79,7 +79,7 @@ export default class Popup {
               // Add data to content
               Object.keys(availableColumns).forEach((key) => {
                 let column = availableColumns[key];
-                let value = aircraft.value(key, column);
+                let value = aircraft.value(key, true);
 
                 if (column.popup && value !== "") {
                   content += `|${popup.lang.content.table.head[key]}|${value}|\n`;

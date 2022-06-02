@@ -41,13 +41,17 @@
   },
   "distance": {
     "styles": ["align-right"],
-    "unit": "m",
     "weight": 2,
     "popup": true
   },
   "track": {
     "styles": ["align-right"],
     "weight": 2,
+    "popup": true
+  },
+  "age": {
+    "styles": ["align-right"],
+    "weight": 3,
     "popup": true
   }
 }

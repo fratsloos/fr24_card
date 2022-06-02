@@ -9,7 +9,8 @@
       "altitude": "Altitude",
       "speed": "Speed",
       "distance": "Distance",
-      "track": "Track"
+      "track": "Track",
+      "age": "Last message"
     }
   },
   "popup": {
@@ -18,6 +19,44 @@
         "property": "Property",
         "value": "Value"
       }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNE",
+      "ne": "NE",
+      "ene": "ENE",
+      "e": "E",
+      "ese": "ESE",
+      "se": "SE",
+      "sse": "SSE",
+      "s": "S",
+      "ssw": "SSW",
+      "sw": "SW",
+      "wsw": "WSW",
+      "w": "W",
+      "wnw": "WNW",
+      "nw": "NW",
+      "nnw": "NNW"
+    },
+    "long": {
+      "n": "North",
+      "nne": "North-northeast",
+      "ne": "Northeast",
+      "ene": "East-northeast",
+      "e": "East",
+      "ese": "East-southeast",
+      "se": "Southeast",
+      "sse": "South-southeast",
+      "s": "South",
+      "ssw": "South-southwest",
+      "sw": "Southwest",
+      "wsw": "West-southwest",
+      "w": "West",
+      "wnw": "West-northwest",
+      "nw": "Northwest",
+      "nnw": "North-northwest"
     }
   }
 }

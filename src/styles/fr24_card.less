@@ -4,36 +4,50 @@ fr24-card {
         border-spacing: 0;
         border-collapse: collapse;
 
-        tr:nth-child(even) {
-            background-color: var(--primary-background-color);
-        }
+        tr {
+            th, td {
+                padding: 4px;
+                text-align: left;
 
-        tr th, tr td {
-            padding: 4px;
-            text-align: left;
+                &.align-right {
+                    text-align: right;
+                }
 
-            &.align-right {
-                text-align: right;
+                &.width-s {
+                    width: 20px;
+                }
             }
 
-            &.width-s {
-                width: 20px;
+            th {
+                background-color: var(--primary-color);
+                color: var(--app-header-text-color, white);
             }
-        }
 
-        tr th {
-            background-color: var(--primary-color);
-            color: var(--app-header-text-color, white);
-        }
-
-        tr td {
-            img {
-                width: 20px;
+            td {
+                img {
+                    width: 20px;
+                }
             }
         }
 
-        tr[data-hex] {
-            cursor: pointer;
+        thead {
+            tr {
+                td {
+                    background-color: var(--secondary-background-color)
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                &:nth-child(even) {
+                    background-color: var(--primary-background-color);
+                }
+
+                &[data-hex] {
+                    cursor: pointer;
+                }
+            }
         }
     }
 }
