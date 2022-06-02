@@ -155,6 +155,15 @@ class Fr24Card extends HTMLElement {
   }
 
   /**
+   * Returns a stub for the default card configuration
+   *
+   * @returns {Object}
+   */
+  static getStubConfig() {
+    return { entity: "sensor.fr24_aircraft" };
+  }
+
+  /**
    * Parses the data retrieved from the entity in to an usable object
    */
   _parseAircrafts() {
