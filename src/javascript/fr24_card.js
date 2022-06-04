@@ -1,3 +1,4 @@
+import Path from "./helpers/path.js";
 import Aircraft from "./helpers/aircraft.js";
 import Distance from "./helpers/distance.js";
 import Popup from "./helpers/popup.js";
@@ -30,6 +31,9 @@ class Fr24Card extends HTMLElement {
     // Distance service
     this._distance = new Distance(this._config, this._hass);
 
+    // Set lang
+    this._lang = new Lang(this._config, this._hass);
+
     // Parse aircrafts
     this._parseAircrafts();
 
@@ -44,6 +48,10 @@ class Fr24Card extends HTMLElement {
    * @param {Object} config Config from the card
    */
   setConfig(config) {
+    // Set path
+    const path = new Path();
+    this._path = path.getPath();
+
     // Available columns
     this._availableColumns = availableColumns;
 
@@ -63,8 +71,8 @@ class Fr24Card extends HTMLElement {
         "distance",
         "track",
       ],
-      sort: "distance",
-      lang: "en",
+      sort: "altitude",
+      lang: null,
       popup: false,
       units: "default",
       larger_units: false,
@@ -100,9 +108,6 @@ class Fr24Card extends HTMLElement {
       throw new Error("Unit '" + this._config.units + "' not supported");
     }
 
-    // Set lang
-    this._lang = new Lang(this._config.lang);
-
     // Make sure this only runs once
     if (!this.setupComplete) {
       // Create card
@@ -120,7 +125,7 @@ class Fr24Card extends HTMLElement {
       const stylesheet = document.createElement("link");
       stylesheet.setAttribute("type", "text/css");
       stylesheet.setAttribute("rel", "stylesheet");
-      stylesheet.setAttribute("href", "/local/fr24card/fr24_card.css");
+      stylesheet.setAttribute("href", this._path + "fr24_card.css");
       this.card.appendChild(stylesheet);
 
       // Load aircraft database
@@ -130,7 +135,7 @@ class Fr24Card extends HTMLElement {
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", "/local/fr24card/fr24_database.js");
+        script.setAttribute("src", this._path + "fr24_database.js");
         document.head.appendChild(script);
       }
 
@@ -194,15 +199,27 @@ class Fr24Card extends HTMLElement {
 
     // Sort aircrafts
     this._aircrafts.sort(function (a, b) {
-      let column = fr24._config.sort || "distance";
+      // Column to sort by
+      let column = fr24._config.sort || "altitude";
 
-      if (a[column] === null || a[column] === "") {
-        return true;
-      } else if (b[column] === null || b[column] === "") {
-        return false;
+      // Values
+      let valueA = a[column];
+      let valueB = b[column];
+
+      // Equal items sort equally
+      if (valueA === valueB) {
+        return 0;
       }
-
-      return a[column] > b[column];
+      // Nulls or empties sort after anything else
+      else if (valueA === null || valueA === "") {
+        return 1;
+      } else if (valueB === null || valueB === "") {
+        return -1;
+      }
+      // Sort ascending
+      else {
+        return valueA < valueB ? -1 : 1;
+      }
     });
   }
 

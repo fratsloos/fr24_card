@@ -10,7 +10,7 @@ Okay, I admit it: these are not frequently asked questions (yet), but to get ahe
   - [The styling of the popup looks strange?](#the-styling-of-the-popup-looks-strange)
   - [If I have the popup open and the sensor is refreshed, does the data in the popup not change?](#if-i-have-the-popup-open-and-the-sensor-is-refreshed-does-the-data-in-the-popup-not-change)
   - [Why is the distance is not correct?](#why-is-the-distance-is-not-correct)
-  - [Why is the registration of the aircrafts is not available on (first) load?](#why-is-the-registration-of-the-aircrafts-is-not-available-on-first-load)
+  - [Why is the registration of the aircrafts not available on (first) load?](#why-is-the-registration-of-the-aircrafts-not-available-on-first-load)
 
 ## That table is nice and all, but can you also make a map?
 
@@ -28,7 +28,7 @@ The popup is based on the functionalities of [browser_mod](https://github.com/th
 
 ## The styling of the popup looks strange?
 
-The popup styling is added using [card-mod](https://github.com/thomasloven/lovelace-card-mod). Install card mod and try again.
+The popup styling is added using [card-mod](https://github.com/thomasloven/lovelace-card-mod). Install card-mod and try again.
 
 ## If I have the popup open and the sensor is refreshed, does the data in the popup not change?
 
@@ -42,7 +42,7 @@ This has the added benefit that when the popup is open and the plane gets out of
 
 The distance is calculated between the coordinates of your configured zone and the position that is received from the aircraft. If you believe the distance is not correct, check if the coordinates of your zone are correct.
 
-## Why is the registration of the aircrafts is not available on (first) load?
+## Why is the registration of the aircrafts not available on (first) load?
 
 The hex (ICAO) code of the data is matched against the data in [`fr24_database.js`](../dist/fr24_database.js). This is a large file that is side loaded when the card is loaded for the first time. This might cause the first render of the card to don't have the registration data. The data will be loaded next time the card is rendered (which happens when the sensor is updated).
 

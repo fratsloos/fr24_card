@@ -14,4 +14,4 @@ It is recommended to use HACS to install this card. If you want to install the c
    5. The URL for the resource is `/local/fr24card/fr24_card.js`;
    6. Select 'Javascript Module';
    7. Click 'CREATE'.
-5. Home Assistant is known for the aggresive caching, so make sure to reload the cache of your browser.
+5. Home Assistant is known for its aggresive caching, so make sure to reload the cache of your browser.

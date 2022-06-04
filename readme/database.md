@@ -2,7 +2,7 @@
 
 The project contains a database with the registration codes of aircrafts based on the hex code (ICAO code). The database is a large JSON object that is added to the `window` object of the browser. Its content is generated based on the JSON files that are distributed in the `/public_html/db/` folder of Dump1090. In this case the version from [FlightAware](https://github.com/flightaware/dump1090) is used.
 
-You can generate the database with the a script added to this repository. It's also possible to add entries to the database that are not in the JSON files of Dump1090.
+You can generate the database with a script added to this repository. It's also possible to add entries to the database that are not in the JSON files of Dump1090.
 
 ## Generate the database
 

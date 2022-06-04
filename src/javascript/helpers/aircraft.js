@@ -1,9 +1,15 @@
+import Path from "./path.js";
 import ICAO from "./icao.js";
 import Lang from "./lang.js";
+import { formatNumber } from "custom-card-helpers";
 
 export default class Aircraft {
   constructor(state, config, distance) {
     this.config = config;
+
+    const path = new Path();
+    this._path = path.getPath();
+
     this.hex = state.hex.toUpperCase();
     this.icon = "mdi:airplane";
 
@@ -26,9 +32,7 @@ export default class Aircraft {
     // Set flag based on ICAO data
     this.flag =
       country !== null && country.iso_3166_1 !== null
-        ? "/local/fr24card/images/flags/" +
-          country.iso_3166_1.toLowerCase() +
-          ".svg"
+        ? `${this._path}images/flags/${country.iso_3166_1.toLowerCase()}.svg`
         : null;
     this.country = country !== null ? country.country : null;
 
@@ -112,7 +116,9 @@ export default class Aircraft {
 
     switch (key) {
       case "icon":
-        return `<font color="#${aircraft.hex}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
+        return inPopup
+          ? `<ha-icon icon="${aircraft.icon}"></ha-icon>`
+          : `<font color="#${aircraft.hex}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
 
       case "flag":
         if (aircraft.flag !== null) {
@@ -141,14 +147,16 @@ export default class Aircraft {
             case "metric":
               if (this.config.larger_units) {
                 // Speed in km/h
-                speed = Math.round(speed * 1.852);
+                speed = formatNumber(Math.round(speed * 1.852));
               } else {
                 // Speed in m/s
-                speed = Math.round(speed * 0.514444444);
+                speed = formatNumber(Math.round(speed * 0.514444444));
               }
 
               break;
           }
+
+          speed = formatNumber(speed);
 
           if (inPopup) {
             speed += " " + unit;
@@ -173,6 +181,8 @@ export default class Aircraft {
 
               break;
           }
+
+          altitude = formatNumber(altitude);
 
           if (inPopup) {
             altitude += " " + unit;
@@ -200,6 +210,10 @@ export default class Aircraft {
 
       default:
         let value = aircraft[key] ?? "";
+
+        if (value !== "" && typeof value === "number") {
+          value = formatNumber(value);
+        }
 
         if (inPopup && value !== "" && unit !== null) {
           value += " " + unit;
