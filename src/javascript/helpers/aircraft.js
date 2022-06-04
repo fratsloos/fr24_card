@@ -116,7 +116,9 @@ export default class Aircraft {
 
     switch (key) {
       case "icon":
-        return `<font color="#${aircraft.hex}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
+        return inPopup
+          ? `<ha-icon icon="${aircraft.icon}"></ha-icon>`
+          : `<font color="#${aircraft.hex}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
 
       case "flag":
         if (aircraft.flag !== null) {

@@ -65,14 +65,14 @@ export default class Popup {
                 content += `<font size="1">&copy; [${photographer}](${link})</font>\n\n`;
               }
 
-              // Add flag and title to content
-              content += "## ";
+              // Add flag, title and icon to content
+              content += "## <span>";
               if (aircraft.flag) {
                 content += `<img src="${aircraft.flag}"/>`;
               }
               content += `${
                 aircraft.registration || aircraft.flight || aircraft.hex
-              }\n`;
+              }</span><span>${aircraft.value("icon", true)}</span>\n`;
 
               // Add table header to content
               content += `|${popup.lang.content.popup.table.head.property}|${popup.lang.content.popup.table.head.value}|\n|:-|-:|\n`;
@@ -100,7 +100,7 @@ export default class Popup {
                       card_mod: {
                         style: {
                           "ha-markdown$":
-                            "h2 img{height:.8em;margin: 0 10px 0 0; display:inline-block;vertical-align:baseline;}table {width: 100%;border-spacing: 0;border-collapse: collapse;}table tr th, table tr td {padding: 4px;}table tr th {background-color: var(--primary-color);color: var(--app-header-text-color, white);}table tr:nth-child(even) {background-color: var(--primary-background-color);}",
+                            "h2{display:flex;justify-content:space-between;}h2 img{height:.8em;margin: 0 10px 0 0; display:inline-block;vertical-align:baseline;}table {width: 100%;border-spacing: 0;border-collapse: collapse;}table tr th, table tr td {padding: 4px;}table tr th {background-color: var(--primary-color);color: var(--app-header-text-color, white);}table tr:nth-child(even) {background-color: var(--primary-background-color);}",
                         },
                       },
                     },
