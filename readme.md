@@ -51,9 +51,9 @@ After adding the sensor you need to restart Home Assistant. After restarting, in
 
 # Installation
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg?style=for-the-badge)](https://github.com/hacs/integration)
 
-Install using [HACS](https://hacs.xyz) (in development), or follow [these instructions](readme/installation.md).
+Install using [HACS](https://hacs.xyz), or follow [these instructions](readme/installation.md).
 
 # Add the card to your dashboard
 
