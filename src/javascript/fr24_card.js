@@ -1,3 +1,4 @@
+import Path from "./helpers/path.js";
 import Aircraft from "./helpers/aircraft.js";
 import Distance from "./helpers/distance.js";
 import Popup from "./helpers/popup.js";
@@ -44,6 +45,10 @@ class Fr24Card extends HTMLElement {
    * @param {Object} config Config from the card
    */
   setConfig(config) {
+    // Set path
+    const path = new Path();
+    this._path = path.getPath();
+
     // Available columns
     this._availableColumns = availableColumns;
 
@@ -120,7 +125,7 @@ class Fr24Card extends HTMLElement {
       const stylesheet = document.createElement("link");
       stylesheet.setAttribute("type", "text/css");
       stylesheet.setAttribute("rel", "stylesheet");
-      stylesheet.setAttribute("href", "/local/fr24card/fr24_card.css");
+      stylesheet.setAttribute("href", this._path + "fr24_card.css");
       this.card.appendChild(stylesheet);
 
       // Load aircraft database
@@ -130,7 +135,7 @@ class Fr24Card extends HTMLElement {
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", "/local/fr24card/fr24_database.js");
+        script.setAttribute("src", this._path + "fr24_database.js");
         document.head.appendChild(script);
       }
 

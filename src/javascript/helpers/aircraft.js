@@ -1,9 +1,14 @@
+import Path from "./path.js";
 import ICAO from "./icao.js";
 import Lang from "./lang.js";
 
 export default class Aircraft {
   constructor(state, config, distance) {
     this.config = config;
+
+    const path = new Path();
+    this._path = path.getPath();
+
     this.hex = state.hex.toUpperCase();
     this.icon = "mdi:airplane";
 
@@ -26,9 +31,7 @@ export default class Aircraft {
     // Set flag based on ICAO data
     this.flag =
       country !== null && country.iso_3166_1 !== null
-        ? "/local/fr24card/images/flags/" +
-          country.iso_3166_1.toLowerCase() +
-          ".svg"
+        ? `${this._path}images/flags/${country.iso_3166_1.toLowerCase()}.svg`
         : null;
     this.country = country !== null ? country.country : null;
 
