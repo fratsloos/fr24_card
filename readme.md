@@ -8,6 +8,13 @@ This card is developed and tested based on the output of `data/aircraft.json` of
 
 The FR24 card has many configuration options and supports multiple languages.
 
+
+**Did my project help you? Then you can always thank me with a coffee!**
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/fratsloos)
+
+---
+
 **Contents of this file**
 - [Lovelace FR24 card](#lovelace-fr24-card)
 - [Preparation](#preparation)
@@ -19,6 +26,8 @@ The FR24 card has many configuration options and supports multiple languages.
 - [F.A.Q.](#faq)
 - [Contribute](#contribute)
 - [Credits](#credits)
+
+---
 
 # Preparation
 
