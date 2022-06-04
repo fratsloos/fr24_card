@@ -1,4 +1,5 @@
 import availableColumns from "../config/columns.json";
+import { handleClick } from "custom-card-helpers";
 
 export default class Popup {
   constructor(element, hass, lang, aircrafts) {
@@ -87,15 +88,21 @@ export default class Popup {
               });
 
               // Open popup using browser_mod
-              popup.hass.callService("browser_mod", "popup", {
-                hide_header: true,
-                card: {
-                  type: "markdown",
-                  content: content,
-                  card_mod: {
-                    style: {
-                      "ha-markdown$":
-                        "h2 img{height:.8em;margin: 0 10px 0 0; display:inline-block;vertical-align:baseline;}table {width: 100%;border-spacing: 0;border-collapse: collapse;}table tr th, table tr td {padding: 4px;}table tr th {background-color: var(--primary-color);color: var(--app-header-text-color, white);}table tr:nth-child(even) {background-color: var(--primary-background-color);}",
+              handleClick(row, popup.hass, {
+                tap_action: {
+                  action: "fire-dom-event",
+                  browser_mod: {
+                    command: "popup",
+                    hide_header: true,
+                    card: {
+                      type: "markdown",
+                      content: content,
+                      card_mod: {
+                        style: {
+                          "ha-markdown$":
+                            "h2 img{height:.8em;margin: 0 10px 0 0; display:inline-block;vertical-align:baseline;}table {width: 100%;border-spacing: 0;border-collapse: collapse;}table tr th, table tr td {padding: 4px;}table tr th {background-color: var(--primary-color);color: var(--app-header-text-color, white);}table tr:nth-child(even) {background-color: var(--primary-background-color);}",
+                        },
+                      },
                     },
                   },
                 },
