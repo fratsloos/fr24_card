@@ -31,6 +31,9 @@ class Fr24Card extends HTMLElement {
     // Distance service
     this._distance = new Distance(this._config, this._hass);
 
+    // Set lang
+    this._lang = new Lang(this._config, this._hass);
+
     // Parse aircrafts
     this._parseAircrafts();
 
@@ -69,7 +72,7 @@ class Fr24Card extends HTMLElement {
         "track",
       ],
       sort: "altitude",
-      lang: "en",
+      lang: null,
       popup: false,
       units: "default",
       larger_units: false,
@@ -104,9 +107,6 @@ class Fr24Card extends HTMLElement {
     if (!["default", "metric"].includes(this._config.units)) {
       throw new Error("Unit '" + this._config.units + "' not supported");
     }
-
-    // Set lang
-    this._lang = new Lang(this._config.lang);
 
     // Make sure this only runs once
     if (!this.setupComplete) {
