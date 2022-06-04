@@ -68,7 +68,7 @@ class Fr24Card extends HTMLElement {
         "distance",
         "track",
       ],
-      sort: "distance",
+      sort: "altitude",
       lang: "en",
       popup: false,
       units: "default",
@@ -199,15 +199,27 @@ class Fr24Card extends HTMLElement {
 
     // Sort aircrafts
     this._aircrafts.sort(function (a, b) {
-      let column = fr24._config.sort || "distance";
+      // Column to sort by
+      let column = fr24._config.sort || "altitude";
 
-      if (a[column] === null || a[column] === "") {
-        return true;
-      } else if (b[column] === null || b[column] === "") {
-        return false;
+      // Values
+      let valueA = a[column];
+      let valueB = b[column];
+
+      // Equal items sort equally
+      if (valueA === valueB) {
+        return 0;
       }
-
-      return a[column] > b[column];
+      // Nulls or empties sort after anything else
+      else if (valueA === null || valueA === "") {
+        return 1;
+      } else if (valueB === null || valueB === "") {
+        return -1;
+      }
+      // Sort ascending
+      else {
+        return valueA < valueB ? -1 : 1;
+      }
     });
   }
 
