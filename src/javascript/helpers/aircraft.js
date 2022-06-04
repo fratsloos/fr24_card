@@ -1,6 +1,7 @@
 import Path from "./path.js";
 import ICAO from "./icao.js";
 import Lang from "./lang.js";
+import { formatNumber } from "custom-card-helpers";
 
 export default class Aircraft {
   constructor(state, config, distance) {
@@ -144,14 +145,16 @@ export default class Aircraft {
             case "metric":
               if (this.config.larger_units) {
                 // Speed in km/h
-                speed = Math.round(speed * 1.852);
+                speed = formatNumber(Math.round(speed * 1.852));
               } else {
                 // Speed in m/s
-                speed = Math.round(speed * 0.514444444);
+                speed = formatNumber(Math.round(speed * 0.514444444));
               }
 
               break;
           }
+
+          speed = formatNumber(speed);
 
           if (inPopup) {
             speed += " " + unit;
@@ -176,6 +179,8 @@ export default class Aircraft {
 
               break;
           }
+
+          altitude = formatNumber(altitude);
 
           if (inPopup) {
             altitude += " " + unit;
@@ -203,6 +208,10 @@ export default class Aircraft {
 
       default:
         let value = aircraft[key] ?? "";
+
+        if (value !== "" && typeof value === "number") {
+          value = formatNumber(value);
+        }
 
         if (inPopup && value !== "" && unit !== null) {
           value += " " + unit;
