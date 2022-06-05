@@ -26,7 +26,6 @@ If applicable, add screenshots to help explain your problem.
 **Environment (please complete the following information):**
  - Home Assistant version: [e.g. 2022.6.1]
  - Browser or app, including version: [e.g. Chrome 100, Android 2022.3.0]
- - Version [e.g. 22]
 
 **Additional context**
 Add any other context about the problem here.
