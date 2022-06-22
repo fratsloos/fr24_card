@@ -1,5 +1,3 @@
-// import database from "./database.json";
-
 /**
  * Modified version of the script by FlightAware, including a modified version
  * of the database.
