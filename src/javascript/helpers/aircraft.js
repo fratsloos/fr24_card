@@ -122,7 +122,7 @@ export default class Aircraft {
 
       case "flag":
         if (aircraft.flag !== null) {
-          return `<img src="${aircraft.flag}" alt="${aircraft.country}" />`;
+          return `<img src="${aircraft.flag}" alt="${aircraft.country}" width="20" />`;
         } else return "";
 
       case "icao":
