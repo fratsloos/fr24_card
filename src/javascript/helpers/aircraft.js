@@ -57,7 +57,7 @@ export default class Aircraft {
   setIcon = function () {
     if (this.vert_rate < 0) {
       this.icon = "mdi:airplane-landing";
-    } else if (this.vert_rate < 0) {
+    } else if (this.vert_rate > 0) {
       this.icon = "mdi:airplane-takeoff";
     }
   };
