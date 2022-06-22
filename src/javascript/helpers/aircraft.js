@@ -1,11 +1,11 @@
 import Path from "./path.js";
 import ICAO from "./icao.js";
-import Lang from "./lang.js";
 import { formatNumber } from "custom-card-helpers";
 
 export default class Aircraft {
-  constructor(state, config, distance) {
+  constructor(state, config, distance, lang) {
     this.config = config;
+    this.lang = lang;
 
     const path = new Path();
     this._path = path.getPath();
@@ -208,6 +208,11 @@ export default class Aircraft {
 
         return track;
 
+      case "registration":
+        return aircraft.registration === null
+          ? this.lang.content.table.data.not_available
+          : aircraft.registration;
+
       default:
         let value = aircraft[key] ?? "";
 
@@ -231,9 +236,6 @@ export default class Aircraft {
    * @returns
    */
   trackAsText = function (track, inPopup) {
-    // Set lang
-    const lang = new Lang(this.config.lang);
-
     let key = "n";
 
     if (track >= 11.25 && track <= 33.75) key = "nne";
@@ -253,7 +255,7 @@ export default class Aircraft {
     else if (track >= 326.25 && track <= 348.75) key = "nnw";
 
     return inPopup
-      ? lang.content.track.long[key]
-      : lang.content.track.short[key];
+      ? this.lang.content.track.long[key]
+      : this.lang.content.track.short[key];
   };
 }
