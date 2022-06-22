@@ -11,6 +11,9 @@
       "distance": "Afstand",
       "track": "Richting",
       "age": "Laatste bericht"
+    },
+    "data": {
+      "not_available": "Nb"
     }
   },
   "popup": {
