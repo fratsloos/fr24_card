@@ -185,7 +185,12 @@ class Fr24Card extends HTMLElement {
 
     // Parse each aircraft
     states.forEach((state) => {
-      let aircraft = new Aircraft(state, this._config, this._distance);
+      let aircraft = new Aircraft(
+        state,
+        this._config,
+        this._distance,
+        this._lang
+      );
       let addToAircrafts = true;
 
       if (this._config.hide.old_messages !== false && aircraft.seen > 30) {

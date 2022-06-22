@@ -68,7 +68,7 @@ export default class Popup {
               // Add flag, title and icon to content
               content += "## <span>";
               if (aircraft.flag) {
-                content += `<img src="${aircraft.flag}"/>`;
+                content += `<img src="${aircraft.flag}" height="15" />`;
               }
               content += `${
                 aircraft.registration || aircraft.flight || aircraft.hex
