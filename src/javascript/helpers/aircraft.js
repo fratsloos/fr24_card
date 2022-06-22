@@ -16,10 +16,10 @@ export default class Aircraft {
     // Map values from the state object
     this.flight = state.flight ?? null;
     this.squawk = state.squawk ?? null;
-    this.altitude = state.altitude ?? null;
-    this.speed = state.speed ?? null;
+    this.altitude = state.altitude ?? state.alt_baro ?? null;
+    this.speed = state.speed ?? state.gs ?? null;
     this.track = state.track ?? null;
-    this.vert_rate = state.vert_rate ?? null;
+    this.vert_rate = state.vert_rate ?? state.baro_rate ?? null;
     this.lat = state.lat ?? null;
     this.lon = state.lon ?? null;
     this.seen = state.seen ?? 100;
