@@ -78,6 +78,7 @@ class Fr24Card extends HTMLElement {
       larger_units: false,
       units_in_table: false,
       track_in_text: false,
+      limit: null,
     };
 
     // Overwrite config
@@ -156,7 +157,7 @@ class Fr24Card extends HTMLElement {
    * @returns {Integer} Height of the card
    */
   getCardSize() {
-    return 100;
+    return Number.isInteger(this._config.limit) ? this._config.limit + 5 : 100;
   }
 
   /**
@@ -263,7 +264,8 @@ class Fr24Card extends HTMLElement {
     table.row(headerCells, "thead");
 
     // Body
-    this._aircrafts.forEach((aircraft) => {
+    let i = 0;
+    for (let aircraft of this._aircrafts) {
       // First aircraft add units in table
       if (needsUnits && !hasUnits) {
         hasUnits = true;
@@ -316,7 +318,15 @@ class Fr24Card extends HTMLElement {
 
       // Add body row
       table.row(cells, null, attrs);
-    });
+
+      // Update iterator
+      i++;
+
+      // Check for limit
+      if (Number.isInteger(this._config.limit) && this._config.limit === i) {
+        break;
+      }
+    }
 
     // Set content
     this.contentDiv.innerHTML = table.getHtml();
