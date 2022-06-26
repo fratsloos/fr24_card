@@ -58,10 +58,6 @@ class Fr24Card extends HTMLElement {
     // Default config
     const defaultConfig = {
       attribute: "aircraft",
-      zone: null,
-      hide: {
-        old_messages: true,
-      },
       columns: [
         "flag",
         "registration",
@@ -71,14 +67,19 @@ class Fr24Card extends HTMLElement {
         "distance",
         "track",
       ],
-      sort: "altitude",
+      hide: {
+        old_messages: true,
+      },
       lang: null,
-      popup: false,
-      units: "default",
       larger_units: false,
-      units_in_table: false,
-      track_in_text: false,
       limit: null,
+      order: "asc",
+      popup: false,
+      sort: "altitude",
+      track_in_text: false,
+      units: "default",
+      units_in_table: false,
+      zone: null,
     };
 
     // Overwrite config
@@ -107,6 +108,10 @@ class Fr24Card extends HTMLElement {
 
     if (!["default", "metric"].includes(this._config.units)) {
       throw new Error("Unit '" + this._config.units + "' not supported");
+    }
+
+    if (!["asc", "desc"].includes(this._config.order)) {
+      throw new Error("Order '" + this._config.order + "' not supported");
     }
 
     // Make sure this only runs once
@@ -227,6 +232,10 @@ class Fr24Card extends HTMLElement {
         return valueA < valueB ? -1 : 1;
       }
     });
+
+    if (this._config.order === "desc") {
+      this._aircrafts = this._aircrafts.reverse();
+    }
   }
 
   /**
