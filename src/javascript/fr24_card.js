@@ -58,10 +58,6 @@ class Fr24Card extends HTMLElement {
     // Default config
     const defaultConfig = {
       attribute: "aircraft",
-      zone: null,
-      hide: {
-        old_messages: true,
-      },
       columns: [
         "flag",
         "registration",
@@ -71,13 +67,19 @@ class Fr24Card extends HTMLElement {
         "distance",
         "track",
       ],
-      sort: "altitude",
+      hide: {
+        old_messages: true,
+      },
       lang: null,
-      popup: false,
-      units: "default",
       larger_units: false,
-      units_in_table: false,
+      limit: null,
+      order: "asc",
+      popup: false,
+      sort: "altitude",
       track_in_text: false,
+      units: "default",
+      units_in_table: false,
+      zone: null,
     };
 
     // Overwrite config
@@ -106,6 +108,10 @@ class Fr24Card extends HTMLElement {
 
     if (!["default", "metric"].includes(this._config.units)) {
       throw new Error("Unit '" + this._config.units + "' not supported");
+    }
+
+    if (!["asc", "desc"].includes(this._config.order)) {
+      throw new Error("Order '" + this._config.order + "' not supported");
     }
 
     // Make sure this only runs once
@@ -156,7 +162,7 @@ class Fr24Card extends HTMLElement {
    * @returns {Integer} Height of the card
    */
   getCardSize() {
-    return 100;
+    return Number.isInteger(this._config.limit) ? this._config.limit + 5 : 100;
   }
 
   /**
@@ -226,6 +232,10 @@ class Fr24Card extends HTMLElement {
         return valueA < valueB ? -1 : 1;
       }
     });
+
+    if (this._config.order === "desc") {
+      this._aircrafts = this._aircrafts.reverse();
+    }
   }
 
   /**
@@ -263,7 +273,8 @@ class Fr24Card extends HTMLElement {
     table.row(headerCells, "thead");
 
     // Body
-    this._aircrafts.forEach((aircraft) => {
+    let i = 0;
+    for (let aircraft of this._aircrafts) {
       // First aircraft add units in table
       if (needsUnits && !hasUnits) {
         hasUnits = true;
@@ -316,7 +327,15 @@ class Fr24Card extends HTMLElement {
 
       // Add body row
       table.row(cells, null, attrs);
-    });
+
+      // Update iterator
+      i++;
+
+      // Check for limit
+      if (Number.isInteger(this._config.limit) && this._config.limit === i) {
+        break;
+      }
+    }
 
     // Set content
     this.contentDiv.innerHTML = table.getHtml();
