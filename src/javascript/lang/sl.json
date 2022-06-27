@@ -1,0 +1,65 @@
+{
+  "table": {
+    "head": {
+      "icao": "ICAO naslov",
+      "country": "Država",
+      "registration": "Registracija",
+      "flight": "Št. leta",
+      "squawk": "Squawk",
+      "altitude": "Višina",
+      "speed": "Hitrost",
+      "distance": "Razdalja",
+      "track": "Smer",
+      "age": "Zaznano pred"
+    },
+    "data": {
+      "not_available": "N/A"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Karakteristika",
+        "value": "Vrednost"
+      }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "S",
+      "nne": "SSV",
+      "ne": "SV",
+      "ene": "VSV",
+      "e": "V",
+      "ese": "VJV",
+      "se": "JV",
+      "sse": "JJV",
+      "s": "J",
+      "ssw": "JJZ",
+      "sw": "JZ",
+      "wsw": "ZJZ",
+      "w": "Z",
+      "wnw": "ZSZ",
+      "nw": "SZ",
+      "nnw": "SSZ"
+    },
+    "long": {
+      "n": "sever",
+      "nne": "sever-severovzhod",
+      "ne": "severovzhod",
+      "ene": "vzhod-severovzhod",
+      "e": "vzhod",
+      "ese": "vzhod-jugovzhod",
+      "se": "jugovzhod",
+      "sse": "jug-jugovzhod",
+      "s": "jug",
+      "ssw": "jug-jugozahod",
+      "sw": "jugozahod",
+      "wsw": "zahod-jugozahod",
+      "w": "zahod",
+      "wnw": "zahod-severozahod",
+      "nw": "severozahod",
+      "nnw": "sever-severozahod"
+    }
+  }
+}
