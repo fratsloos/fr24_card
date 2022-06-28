@@ -1,0 +1,65 @@
+{
+  "table": {
+    "head": {
+      "icao": "ICAO Code",
+      "country": "Land",
+      "registration": "Registration",
+      "flight": "Flug",
+      "squawk": "Squawk",
+      "altitude": "Höhe",
+      "speed": "Geschwindigkeit",
+      "distance": "Entfernung",
+      "track": "Pfad",
+      "age": "Letzte Nachricht"
+    },
+    "data": {
+      "not_available": "N/V"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Eigenschaft",
+        "value": "Wert"
+      }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNO",
+      "ne": "NO",
+      "ene": "ONO",
+      "e": "O",
+      "ese": "OSO",
+      "se": "SO",
+      "sse": "SSO",
+      "s": "S",
+      "ssw": "SSW",
+      "sw": "SW",
+      "wsw": "WSW",
+      "w": "W",
+      "wnw": "WNW",
+      "nw": "NW",
+      "nnw": "NNW"
+    },
+    "long": {
+      "n": "Nord",
+      "nne": "Nord-Nord-Ost",
+      "ne": "Nord-Ost",
+      "ene": "Ost-Nord-Ost",
+      "e": "Ost",
+      "ese": "Ost-Süd-Ost",
+      "se": "Süd-Ost",
+      "sse": "Süd-Süd-Ost",
+      "s": "Süd",
+      "ssw": "Süd-Süd-West",
+      "sw": "Süd-West",
+      "wsw": "West-Süd-West",
+      "w": "West",
+      "wnw": "West-Nord-West",
+      "nw": "Nord-West",
+      "nnw": "Nord-Nord-West"
+    }
+  }
+}
