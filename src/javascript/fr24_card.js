@@ -69,6 +69,7 @@ class Fr24Card extends HTMLElement {
       ],
       hide: {
         old_messages: true,
+        empty: [],
       },
       lang: null,
       larger_units: false,
@@ -83,10 +84,17 @@ class Fr24Card extends HTMLElement {
     };
 
     // Overwrite config
+    const hideObject = {
+      ...defaultConfig.hide,
+      ...config.hide,
+    };
+
     this._config = {
       ...defaultConfig,
       ...config,
     };
+
+    this._config.hide = hideObject;
 
     // Check config
     if (!config.entity) {
@@ -201,6 +209,14 @@ class Fr24Card extends HTMLElement {
 
       if (this._config.hide.old_messages !== false && aircraft.seen > 30) {
         addToAircrafts = false;
+      } else if (this._config.hide.empty.length > 0) {
+        for (let i = 0; i < this._config.hide.empty.length; i++) {
+          let column = this._config.hide.empty[i];
+          if (aircraft[column] === null || aircraft[column] === "") {
+            addToAircrafts = false;
+            break;
+          }
+        }
       }
 
       if (addToAircrafts) {

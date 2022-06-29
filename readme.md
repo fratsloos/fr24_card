@@ -23,6 +23,7 @@ The FR24 card has many configuration options and supports multiple languages.
 - [Configuration](#configuration)
   - [Columns](#columns)
   - [Hide](#hide)
+    - [Hide empty values](#hide-empty-values)
 - [F.A.Q.](#faq)
 - [Contribute](#contribute)
 - [Credits](#credits)
@@ -128,9 +129,37 @@ hide:
 
 The following keys are available in the object:
 
-| Option         | Type      | Default | Accepted        | Description                                                                                                                                                                                          |
-| :------------- | :-------- | :------ | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `old_messages` | `boolean` | `true`  | `true`, `false` | By default aircraft data which is received more than 30 seconds ago will be filtered out of the card. Setting this option to `false` will show all aircraft data that is available in the JSON file. |
+| Option         | Type      | Default | Accepted                                               | Description                                                                                                                                                                                                                                                                                                                                       |
+| :------------- | :-------- | :------ | :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `old_messages` | `boolean` | `true`  | `true`, `false`                                        | By default aircraft data which is received more than 30 seconds ago will be filtered out of the card. Setting this option to `false` will show all aircraft data that is available in the JSON file.                                                                                                                                              |
+| `empty`        | `array`   |         | Array with columns, see [examples](#hide-empty-values) | By default, all aircraft are shown, including empty values in the table. With this option it is possible to set the columns that should not be empty. The array acts as an 'or' selector; if one of the columns has an empty value, the plane is not added to the table. This option is especially useful in combination with `sort` and `order`. |
+
+### Hide empty values
+
+With the option `hide.empty` it's possible to remove empty values from the table.
+
+Example to remove all rows where there is no distance:
+
+```yaml
+type: custom:fr24-card
+entity: sensor.fr24_aircraft
+hide:
+  empty:
+    - distance
+
+```
+
+Example to remove all rows where there is no distance *or* track:
+
+```yaml
+type: custom:fr24-card
+entity: sensor.fr24_aircraft
+hide:
+  empty:
+    - distance
+    - track
+
+```
 
 # F.A.Q.
 
