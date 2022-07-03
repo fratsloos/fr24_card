@@ -81,6 +81,27 @@ class Fr24Card extends HTMLElement {
       units: "default",
       units_in_table: false,
       zone: null,
+      colors: {
+        table_head_bg: null,
+        table_head_text: null,
+
+        table_units_bg: null,
+        table_units_text: null,
+
+        table_text: null,
+
+        table_even_row_bg: null,
+        table_even_row_text: null,
+
+        popup_bg: null,
+        popup_text: null,
+
+        popup_table_head_bg: null,
+        popup_table_head_text: null,
+
+        popup_table_even_row_bg: null,
+        popup_table_even_row_text: null,
+      },
     };
 
     // Overwrite config
@@ -89,12 +110,18 @@ class Fr24Card extends HTMLElement {
       ...config.hide,
     };
 
+    const colorsObject = {
+      ...defaultConfig.colors,
+      ...config.colors,
+    };
+
     this._config = {
       ...defaultConfig,
       ...config,
     };
 
     this._config.hide = hideObject;
+    this._config.colors = colorsObject;
 
     // Check config
     if (!config.entity) {
@@ -143,9 +170,7 @@ class Fr24Card extends HTMLElement {
       this.card.appendChild(stylesheet);
 
       // Load aircraft database
-      let loadAircraftdb = false;
       if (window.fr24db.length === 0) {
-        loadAircraftdb = true;
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
@@ -361,6 +386,7 @@ class Fr24Card extends HTMLElement {
       const popup = new Popup(
         this.contentDiv,
         this._hass,
+        this._config,
         this._lang,
         this._aircrafts
       );
