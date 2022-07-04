@@ -100,47 +100,82 @@ export default class Popup {
                       content: content,
                       card_mod: {
                         style: {
-                          ".": `ha-markdown{
-                                  background:${
-                                    popup.config.colors.popup_bg ??
-                                    "var(--card-background-color)"
-                                  };
-                                }`,
-                          "ha-markdown$": `font{
-                                            color:${
-                                              popup.config.colors.popup_text ??
-                                              popup.config.colors.table_text ??
-                                              "var(--primary-text-color)"
-                                            };
-                                          }font a{color:${
-                                            popup.config.colors.popup_text ??
-                                            popup.config.colors.table_text ??
-                                            "var(--primary-color)"
-                                          };}h2{display:flex;justify-content:space-between;color:${
-                            popup.config.colors.popup_text ??
-                            popup.config.colors.table_text ??
-                            "var(--primary-text-color)"
-                          };}h2 img{height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${
-                            popup.config.colors.popup_table_head_bg ??
-                            popup.config.colors.table_head_bg ??
-                            "var(--primary-color)"
-                          };color:${
-                            popup.config.colors.popup_table_head_text ??
-                            popup.config.colors.table_head_text ??
-                            "var(--app-header-text-color, white)"
-                          };}table tr{color:${
-                            popup.config.colors.popup_text ??
-                            popup.config.colors.table_text ??
-                            "var(--primary-text-color)"
-                          };}table tr:nth-child(even){background-color:${
-                            popup.config.colors.popup_table_even_row_bg ??
-                            popup.config.colors.table_even_row_bg ??
-                            "var(--primary-background-color)"
-                          };color:${
-                            popup.config.colors.popup_table_even_row_text ??
-                            popup.config.colors.table_even_row_text ??
-                            "var(--primary-text-color)"
-                          };}`,
+                          ".": `
+                            ha-markdown{
+                              background:${
+                                popup.config.colors.popup_bg ??
+                                "var(--card-background-color)"
+                              };
+                            }`,
+                          "ha-markdown$": `
+                            font {
+                              color: ${
+                                popup.config.colors.popup_text ??
+                                popup.config.colors.table_text ??
+                                "var(--primary-text-color)"
+                              };
+                            }
+                            font a{
+                              color:${
+                                popup.config.colors.popup_text ??
+                                popup.config.colors.table_text ??
+                                "var(--primary-color)"
+                              };
+                            }
+                            h2{
+                              display:flex;
+                              justify-content:space-between;
+                              color:${
+                                popup.config.colors.popup_text ??
+                                popup.config.colors.table_text ??
+                                "var(--primary-text-color)"
+                              };
+                            }
+                            h2 img{
+                              height:.8em;
+                              margin:0 10px 0 0;
+                              display:inline-block;
+                              vertical-align:baseline;
+                            }
+                            table{
+                              width:100%;
+                              border-spacing:0;
+                              border-collapse:collapse;
+                            }
+                            table tr th, table tr td{
+                              padding:4px;
+                            }
+                            table tr th{
+                              background-color:${
+                                popup.config.colors.popup_table_head_bg ??
+                                popup.config.colors.table_head_bg ??
+                                "var(--primary-color)"
+                              };
+                              color:${
+                                popup.config.colors.popup_table_head_text ??
+                                popup.config.colors.table_head_text ??
+                                "var(--app-header-text-color, white)"
+                              };
+                            }
+                            table tr{
+                              color:${
+                                popup.config.colors.popup_text ??
+                                popup.config.colors.table_text ??
+                                "var(--primary-text-color)"
+                              };
+                            }
+                            table tr:nth-child(even){
+                              background-color:${
+                                popup.config.colors.popup_table_even_row_bg ??
+                                popup.config.colors.table_even_row_bg ??
+                                "var(--primary-background-color)"
+                              };
+                              color:${
+                                popup.config.colors.popup_table_even_row_text ??
+                                popup.config.colors.table_even_row_text ??
+                                "var(--primary-text-color)"
+                              };
+                            }`,
                         },
                       },
                     },
