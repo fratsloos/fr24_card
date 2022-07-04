@@ -306,8 +306,28 @@ class Fr24Card extends HTMLElement {
       // Styles of the cell
       let styles = column.styles ?? null;
 
+      // Inline style
+      let style = "";
+      if (this._config.colors.table_head_bg !== null) {
+        style +=
+          "background-color:" +
+          this._config.colors.table_head_bg +
+          " !important;";
+      }
+      if (this._config.colors.table_head_text !== null) {
+        style +=
+          "color:" + this._config.colors.table_head_text + " !important;";
+      }
+
+      // Attributes
+      let attrs = [];
+      if (style.length > 0) {
+        attrs["style"] = style;
+      }
+
       // Push header cell
-      headerCells.push(table.cell(value, styles, "th"));
+      let cell = table.cell(value, styles, "th", attrs);
+      headerCells.push(cell);
     });
 
     // Add header row
@@ -321,6 +341,7 @@ class Fr24Card extends HTMLElement {
         hasUnits = true;
 
         let unitCells = [];
+
         this._config.columns.forEach((key) => {
           // Get column from the available columns
           let column = this._availableColumns[key];
@@ -336,9 +357,31 @@ class Fr24Card extends HTMLElement {
           // Styles of the cell
           let styles = column.styles ?? null;
 
+          // Inline style
+          let style = "";
+          if (this._config.colors.table_units_bg !== null) {
+            style +=
+              "background-color:" +
+              this._config.colors.table_units_bg +
+              " !important;";
+          }
+          if (this._config.colors.table_units_text !== null) {
+            style +=
+              "color:" + this._config.colors.table_units_text + " !important;";
+          }
+
+          // Attributes
+          let attrs = [];
+          if (style.length > 0) {
+            attrs["style"] = style;
+          }
+
           // Push header cell
-          unitCells.push(table.cell(value, styles, "td"));
+          let cell = table.cell(value, styles, "td", attrs);
+          unitCells.push(cell);
         });
+
+        // Add units row
         table.row(unitCells, "thead");
       }
 
@@ -354,9 +397,38 @@ class Fr24Card extends HTMLElement {
           return;
         }
 
-        let cell = table.cell(aircraft.value(key), column.styles ?? null);
+        // Inline style
+        let style = "";
+        if (i % 2 === 1) {
+          if (this._config.colors.table_even_row_bg !== null) {
+            style +=
+              "background-color:" +
+              this._config.colors.table_even_row_bg +
+              " !important;";
+          }
+          if (this._config.colors.table_even_row_text !== null) {
+            style +=
+              "color:" +
+              this._config.colors.table_even_row_text +
+              " !important;";
+          }
+        } else if (this._config.colors.table_text !== null) {
+          style += "color:" + this._config.colors.table_text + " !important;";
+        }
+
+        // Attributes
+        let attrs = [];
+        if (style.length > 0) {
+          attrs["style"] = style;
+        }
 
         // Push header cell
+        let cell = table.cell(
+          aircraft.value(key),
+          column.styles ?? null,
+          "td",
+          attrs
+        );
         cells.push(cell);
       });
 

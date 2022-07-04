@@ -23,4 +23,17 @@ export default class Cell {
       this.element.setAttribute("class", classes.join(" "));
     }
   };
+
+  /**
+   * Adds attributes to the HTML of the cell
+   *
+   * @param {Object} attrs Object with the attributes of the row
+   */
+  addAttributes = function (attrs) {
+    let keys = Object.keys(attrs);
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
+      this.element.setAttribute(key, attrs[key]);
+    }
+  };
 }

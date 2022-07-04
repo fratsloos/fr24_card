@@ -40,6 +40,7 @@ export default class Table {
    *
    * @param {Array} cells Array with cell to add to the table
    * @param {String} destination Destination of the table row, default: `tbody`
+   * @param {Object|null} attrs HTML attributes of the row
    */
   row = function (cells = [], destination = "tbody", attrs = null) {
     let row = new Row();
@@ -77,15 +78,24 @@ export default class Table {
    * @param {String} value Value of the table cell, can be in HTML
    * @param {Array} classes CSS classes to add to the cell
    * @param {String} element Type of element, default: `td`
+   * @param {Object|null} attrs HTML attributes of the cell
    * @returns {HTMLElement} Element of the table cell
    */
-  cell = function (value, classes = null, element = "td") {
+  cell = function (value, classes = null, element = "td", attrs = null) {
     let cell = new Cell(element);
 
     cell.setValue(value);
 
     if (classes != null && typeof classes === "object") {
       cell.setClasses(classes);
+    }
+
+    if (
+      typeof attrs === "object" &&
+      attrs !== null &&
+      Object.keys(attrs).length > 0
+    ) {
+      cell.addAttributes(attrs);
     }
 
     return cell;
