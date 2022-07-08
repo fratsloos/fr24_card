@@ -21,8 +21,10 @@ The FR24 card has many configuration options and supports multiple languages.
 - [Installation](#installation)
 - [Add the card to your dashboard](#add-the-card-to-your-dashboard)
 - [Configuration](#configuration)
+  - [Colors](#colors)
   - [Columns](#columns)
   - [Hide](#hide)
+    - [Hide empty values](#hide-empty-values)
 - [F.A.Q.](#faq)
 - [Contribute](#contribute)
 - [Credits](#credits)
@@ -81,6 +83,7 @@ The following configuration options are available:
 | Option           | Type      | Default                                                                        | Accepted                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | :--------------- | :-------- | :----------------------------------------------------------------------------- | :------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `attribute`      | `string`  | `aircraft`                                                                     | An attribute of the sensor                                          | By default the card will read the aircrafts from the sensors `aircraft` attribute. If your sensor uses a different attribute, change this value to the name of your attribute.                                                                                                                                                                                                                                                                                                                                                                |
+| `colors`         | `object`  |                                                                                |                                                                     | Used to overwrite the default color scheme of the card. See [Colors](#colors).                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `columns`        | `array`   | `["flag", "registration", "flight", "altitude", "speed", "distance", "track"]` | Array with any of the columns, see [columns](#columns)              | Array containing the columns to show in the table. The data of the other columns is available in the popup, if that is enabled. Too many columns will break your Dashboard, so the card will give a warning if too many columns are added.                                                                                                                                                                                                                                                                                                    |
 | `hide`           | `object`  |                                                                                |                                                                     | Used to configure which data is hidden. See [Hide](#hide).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `lang`           | `string`  | `null`                                                                         | Any supported language, see the [lang folder](src/javascript/lang/) | Sets the display language of the data. By default the `hass` object of your browser will be used to set the language. If that language is not available, English will be used. The registered country is always in English.                                                                                                                                                                                                                                                                                                                   |
@@ -93,6 +96,40 @@ The following configuration options are available:
 | `units_in_table` | `boolean` | `false`                                                                        | `true`, `false`                                                     | When this option is set to `true`, the table header will be appended with a second row containing the units.<br><br>![Units in the table header](https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/units.png?raw=true "Units in the table header")                                                                                                                                                                                                                                                                   |
 | `units`          | `string`  | `default`                                                                      | `default`, `metric`                                                 | Sets the units for the values. The `default` units are as they are returned by Dump1090 (`ft` for altitude, `NM` for distance, `kt` for speed). When using `metric` the value and units are converted (`m` for altitude and distance, `m/s` for speed).                                                                                                                                                                                                                                                                                       |
 | `zone`           | `string`  | `null`                                                                         | Any sensor that is a zone, example `zone.home`                      | The distance between Home Assistant and the reported position of the aircraft is calculated using the position of a zone. If you don't set a `zone` the data doesn't have the distance.                                                                                                                                                                                                                                                                                                                                                       |
+
+## Colors
+
+By default the card uses the primairy and secondairy colors of the active color scheme. In some cases this might lead to unwanted results. Using the `colors` object in the configuration of the card it's possible to overwrite the colors of both the table in the card and the popup.
+
+The colors can be added as values that are accepted by CSS: HEX code (which must be enclosed by single quotes), RGB value, named color or a CSS variable. Example:
+
+```yaml
+type: custom:fr24-card
+entity: sensor.fr24_aircraft
+colors:
+  table_head_bg: var(--primary-color)
+  table_head_text: yellow
+  table_units_bg: rgb(187,78,123)
+  table_units_text: '#00ff00'
+```
+
+With this option you can really go creative and make the ~~ugliest~~ most original creations. The following options are available:
+
+| Key                         | Description                                                                                                                        |
+| :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `table_head_bg`             | Background color of the table header                                                                                               |
+| `table_head_text`           | Text color of the table header                                                                                                     |
+| `table_units_bg`            | Background color of the row with the units                                                                                         |
+| `table_units_text`          | Text color of the row with the units                                                                                               |
+| `table_text`                | Default text color for cells                                                                                                       |
+| `table_even_row_bg`         | Background color for every second row (zebra striping)                                                                             |
+| `table_even_row_text`       | Text color for every second row (zebra striping)                                                                                   |
+| `popup_bg`                  | Background color of the popup                                                                                                      |
+| `popup_text`                | Default text color in the popup                                                                                                    |
+| `popup_table_head_bg`       | Background color of the table header in the popup, if not used this option will fall back on `table_head_bg`                       |
+| `popup_table_head_text`     | Text color of the table header in the popup, if not used this option will fall back on `table_head_text`                           |
+| `popup_table_even_row_bg`   | Background color for every second row in the popup (zebra striping), if not used this option will fall back on `table_even_row_bg` |
+| `popup_table_even_row_text` | Text color for every second row in the popup (zebra striping), if not used this option will fall back on `table_even_row_text`     |
 
 ## Columns
 
@@ -128,9 +165,37 @@ hide:
 
 The following keys are available in the object:
 
-| Option         | Type      | Default | Accepted        | Description                                                                                                                                                                                          |
-| :------------- | :-------- | :------ | :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `old_messages` | `boolean` | `true`  | `true`, `false` | By default aircraft data which is received more than 30 seconds ago will be filtered out of the card. Setting this option to `false` will show all aircraft data that is available in the JSON file. |
+| Option         | Type      | Default | Accepted                                               | Description                                                                                                                                                                                                                                                                                                                                       |
+| :------------- | :-------- | :------ | :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `old_messages` | `boolean` | `true`  | `true`, `false`                                        | By default aircraft data which is received more than 30 seconds ago will be filtered out of the card. Setting this option to `false` will show all aircraft data that is available in the JSON file.                                                                                                                                              |
+| `empty`        | `array`   |         | Array with columns, see [examples](#hide-empty-values) | By default, all aircraft are shown, including empty values in the table. With this option it is possible to set the columns that should not be empty. The array acts as an 'or' selector; if one of the columns has an empty value, the plane is not added to the table. This option is especially useful in combination with `sort` and `order`. |
+
+### Hide empty values
+
+With the option `hide.empty` it's possible to remove empty values from the table.
+
+Example to remove all rows where there is no distance:
+
+```yaml
+type: custom:fr24-card
+entity: sensor.fr24_aircraft
+hide:
+  empty:
+    - distance
+
+```
+
+Example to remove all rows where there is no distance *or* track:
+
+```yaml
+type: custom:fr24-card
+entity: sensor.fr24_aircraft
+hide:
+  empty:
+    - distance
+    - track
+
+```
 
 # F.A.Q.
 
