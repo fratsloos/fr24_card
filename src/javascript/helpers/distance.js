@@ -27,42 +27,55 @@ export default class Distance {
     }
   };
 
-  deg2rad = function (deg) {
-    return deg * (Math.PI / 180);
-  };
-
   calculate = function (lat, lon) {
+    // Check for empty or invalid coordinates
     if (lat === null || lon === null) {
       return "";
     }
 
-    let R = 6371000; // Radius of the earth in m
-    let dLat = this.deg2rad(lat - this.lat); // deg2rad below
-    let dLon = this.deg2rad(lon - this.lon);
-    let a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.deg2rad(this.lat)) *
-        Math.cos(this.deg2rad(this.lon)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    let d = Math.round(R * c); // Distance in m
+    // Check for same location
+    if (lat === this.lat && lon === this.lon) {
+      return 0;
+    }
+
+    let R = 6371071; // Radius of the Earth in meter
+    let rlat1 = this.lat * (Math.PI / 180); // Convert degrees to radians
+    let rlat2 = lat * (Math.PI / 180); // Convert degrees to radians
+    let difflat = rlat2 - rlat1; // Radian difference (latitudes)
+    let difflon = (lon - this.lon) * (Math.PI / 180); // Radian difference (longitudes)
+
+    let distance =
+      2 *
+      R *
+      Math.asin(
+        Math.sqrt(
+          Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+            Math.cos(rlat1) *
+              Math.cos(rlat2) *
+              Math.sin(difflon / 2) *
+              Math.sin(difflon / 2)
+        )
+      );
+
+    // Round on the meter
+    distance = Math.round(distance);
 
     // Convert distance to configures unit
     switch (this.units) {
       case "metric":
         if (this.config.larger_units) {
           // In km
-          d = Math.round((d / 1000) * 10) / 10;
+          distance = Math.round((distance / 1000) * 10) / 10;
         }
         break;
 
       case "default":
         // In Nautical Miles
-        d = Math.round(d * 0.000539956803 * 10) / 10;
+        distance = Math.round(distance * 0.000539956803 * 10) / 10;
         break;
     }
 
-    return d;
+    // Return the distance
+    return distance;
   };
 }

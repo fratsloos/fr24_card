@@ -55,6 +55,10 @@ export default class Popup {
               // Content of the popup
               let content = "";
 
+              // Title of the airplane
+              let title =
+                aircraft.registration || aircraft.flight || aircraft.hex;
+
               // Check if photos found
               if (json.photos.length > 0) {
                 let image = json.photos[0].thumbnail_large.src;
@@ -62,7 +66,7 @@ export default class Popup {
                 let photographer = json.photos[0].photographer;
 
                 // Add photo to content
-                content += `![Image](${image})\n`;
+                content += `![${title} - &copy; ${photographer}](${image} "${title} - &copy; ${photographer}")\n`;
                 content += `<font size="1">&copy; [${photographer}](${link})</font>\n\n`;
               }
 
@@ -71,9 +75,10 @@ export default class Popup {
               if (aircraft.flag) {
                 content += `<img src="${aircraft.flag}" height="15" />`;
               }
-              content += `${
-                aircraft.registration || aircraft.flight || aircraft.hex
-              }</span><span>${aircraft.value("icon", true)}</span>\n`;
+              content += `${title}</span><span>${aircraft.value(
+                "icon",
+                true
+              )}</span>\n`;
 
               // Add table header to content
               content += `|${popup.lang.content.popup.table.head.property}|${popup.lang.content.popup.table.head.value}|\n|:-|-:|\n`;
