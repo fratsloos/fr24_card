@@ -2,7 +2,8 @@
   "icon": {
     "styles": ["width-s"],
     "weight": 1,
-    "popup": false
+    "popup": false,
+    "html": true
   },
   "icao": {
     "weight": 2,
@@ -11,7 +12,8 @@
   "flag": {
     "styles": ["width-s"],
     "weight": 1,
-    "popup": false
+    "popup": false,
+    "html": true
   },
   "country": {
     "weight": 4,

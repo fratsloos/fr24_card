@@ -10,6 +10,12 @@ module.exports = {
     filename: "fr24_card.js",
   },
 
+  entry: "./src/javascript/fr24_card_lit.js",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "fr24_card_lit.js",
+  },
+
   module: {
     rules: [
       {
