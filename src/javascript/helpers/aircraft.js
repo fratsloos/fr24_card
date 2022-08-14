@@ -23,11 +23,11 @@ export default class Aircraft {
     this.lat = state.lat ?? null;
     this.lon = state.lon ?? null;
     this.seen = state.seen ?? 100;
+    this.aircraft_type = state.t ?? null;
 
     // ICAO data
     const icao = new ICAO();
     const country = icao.country.find(this.hex);
-    const registration = icao.registration.lookup(this.hex);
 
     // Set flag based on ICAO data
     this.flag =
@@ -36,8 +36,16 @@ export default class Aircraft {
         : null;
     this.country = country !== null ? country.country : null;
 
-    // Set registration based on ICAO data
-    this.registration = registration;
+    // Registration, either from JSON or calculated
+    const hasRegistration = typeof state.r !== "undefined" && state.r !== "";
+    if (hasRegistration) {
+      this.registration = state.r;
+    } else {
+      const registration = icao.registration.lookup(this.hex);
+
+      // Set registration based on ICAO data
+      this.registration = registration;
+    }
 
     // Calculate distance if distance service is setup
     this.distance = distance.isSetUp()
