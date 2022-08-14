@@ -10,7 +10,8 @@
       "speed": "Snelheid",
       "distance": "Afstand",
       "track": "Richting",
-      "age": "Laatste bericht"
+      "age": "Laatste bericht",
+      "aircraft_type": "Type"
     },
     "data": {
       "not_available": "Nb"
