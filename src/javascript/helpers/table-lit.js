@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html, css, unsafeCSS } from "lit";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import availableColumns from "../config/columns.json";
@@ -99,40 +99,71 @@ class Table extends LitElement {
     }
 
     // Return the table with the data
-    return html`<table>
-      <thead>
-        <!-- Column headers -->
-        <tr>
-          ${map(
-            headerCells,
-            (headerCell) => html`<th>${headerCell.value}</th>`
-          )}
-        </tr>
-
-        <!-- Units -->
-        ${unitCells.length > 0
-          ? html`<tr>
-              ${map(unitCells, (unitCell) => html`<td>${unitCell.value}</td>`)}
-            </tr>`
-          : ""}
-      </thead>
-      <tbody>
-        <!-- Aircrafts -->
-        ${map(
-          aircraftRows,
-          (aircraftCells) => html`<tr>
+    return html`<style>
+        :host {
+          --fr24-table-head-bg: ${this.config.colors.table_head_bg !== null
+            ? this.config.colors.table_head_bg
+            : "var(--primary-color)"};
+          --fr24-table-head-text: ${this.config.colors.table_head_text !== null
+            ? this.config.colors.table_head_text
+            : "var(--app-header-text-color)"};
+          --fr24-table-units-bg: ${this.config.colors.table_units_bg !== null
+            ? this.config.colors.table_units_bg
+            : "var(--secondary-background-color)"};
+          --fr24-table-units-text: ${this.config.colors.table_units_text !==
+          null
+            ? this.config.colors.table_units_text
+            : "var(--primary-text-color)"};
+          --fr24-table-text: ${this.config.colors.table_text !== null
+            ? this.config.colors.table_text
+            : "var(--primary-text-color)"};
+          --fr24-table-even-row-bg: ${this.config.colors.table_even_row_bg !==
+          null
+            ? this.config.colors.table_even_row_bg
+            : "var(--primary-background-color)"};
+          --fr24-table-even-row-text: ${this.config.colors
+            .table_even_row_text !== null
+            ? this.config.colors.table_even_row_text
+            : "var(--primary-text-color)"};
+        }
+      </style>
+      <table>
+        <thead>
+          <!-- Column headers -->
+          <tr>
             ${map(
-              aircraftCells,
-              (aircraftCell) => html`<td>
-                ${aircraftCell.html
-                  ? html`${unsafeHTML(aircraftCell.value)}`
-                  : html`${aircraftCell.value}`}
-              </td>`
+              headerCells,
+              (headerCell) => html`<th>${headerCell.value}</th>`
             )}
-          </tr>`
-        )}
-      </tbody>
-    </table>`;
+          </tr>
+
+          <!-- Units -->
+          ${unitCells.length > 0
+            ? html`<tr>
+                ${map(
+                  unitCells,
+                  (unitCell) => html`<td>${unitCell.value}</td>`
+                )}
+              </tr>`
+            : ""}
+        </thead>
+        <tbody>
+          <!-- Aircrafts -->
+          ${map(
+            aircraftRows,
+            (aircraftCells) => html`<tr>
+              ${map(
+                aircraftCells,
+                (aircraftCell) => html`<td>
+                  ${aircraftCell.html
+                    ? html`${unsafeHTML(aircraftCell.value)}`
+                    : html`${aircraftCell.value}`}
+                </td>`
+              )}
+            </tr>`
+          )}
+        </tbody>
+      </table>`;
   }
 
   static get styles() {
@@ -150,8 +181,8 @@ class Table extends LitElement {
       }
 
       table tr th {
-        background-color: var(--primary-color);
-        color: var(--app-header-text-color, white);
+        background-color: var(--fr24-table-head-bg);
+        color: var(--fr24-table-head-text);
       }
 
       table tr td img {
@@ -159,11 +190,20 @@ class Table extends LitElement {
       }
 
       table thead tr td {
-        background-color: var(--secondary-background-color);
+        background-color: var(--fr24-table-units-bg);
+        color: var(--fr24-table-units-text);
+      }
+
+      table tbody tr td {
+        color: var(--fr24-table-text);
       }
 
       table tbody tr:nth-child(even) {
-        background-color: var(--primary-background-color);
+        background-color: var(--fr24-table-even-row-bg);
+      }
+
+      table tbody tr:nth-child(even) td {
+        color: var(--fr24-table-even-row-text);
       }
     `;
   }
