@@ -5,7 +5,6 @@ import availableColumns from "./config/columns.json";
 import Distance from "./helpers/distance.js";
 import Lang from "./helpers/lang.js";
 import Path from "./helpers/path.js";
-import Popup from "./helpers/popup.js";
 import Table from "./helpers/table-lit.js";
 
 // Add card to the custom cards
@@ -27,6 +26,11 @@ class FR24CardLit extends LitElement {
     };
   }
 
+  /**
+   * Renders the content of the card
+   *
+   * @returns html
+   */
   render() {
     // Distance service
     this._distance = new Distance(this.config, this.hass);
@@ -56,6 +60,12 @@ class FR24CardLit extends LitElement {
     return html`<fr24-card>Entity <b>not</b> set</fr24-card>`;
   }
 
+  /**
+   * Merges the default config with the config from the front-end and checks if
+   * the config is valid
+   *
+   * @param {Object} config
+   */
   setConfig(config) {
     // Set path
     const path = new Path();
@@ -150,11 +160,25 @@ class FR24CardLit extends LitElement {
     this.config = config;
   }
 
-  // The height of your card. Home Assistant uses this to automatically
-  // distribute all cards over the available columns.
+  /**
+   * Returns the height of the card
+   *
+   * Aim for a high value, as the length of the planes in the map can be
+   * different each time.
+   *
+   * @returns {Integer} Height of the card
+   */
   getCardSize() {
-    // return this.config.entities.length + 1;
-    return 1000;
+    return Number.isInteger(this.config.limit) ? this.config.limit + 5 : 100;
+  }
+
+  /**
+   * Returns a stub for the default card configuration
+   *
+   * @returns {Object}
+   */
+  static getStubConfig() {
+    return { entity: "sensor.fr24_aircraft" };
   }
 
   /**
@@ -229,4 +253,5 @@ class FR24CardLit extends LitElement {
     }
   }
 }
+
 customElements.define("fr24-card-lit", FR24CardLit);

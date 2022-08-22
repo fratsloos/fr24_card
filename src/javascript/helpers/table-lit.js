@@ -1,7 +1,8 @@
-import { LitElement, html, css, unsafeCSS } from "lit";
+import { LitElement, html, css } from "lit";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import availableColumns from "../config/columns.json";
+import Popup from "./popup.js";
 
 class Table extends LitElement {
   static get properties() {
@@ -36,6 +37,7 @@ class Table extends LitElement {
       // Update header cells
       headerCells.push({
         value: value,
+        styles: column.styles ?? [],
       });
     });
 
@@ -59,6 +61,7 @@ class Table extends LitElement {
         // Update unit cells
         unitCells.push({
           value: value,
+          styles: column.styles ?? [],
         });
       });
     }
@@ -83,11 +86,21 @@ class Table extends LitElement {
         cells.push({
           value: aircraft.value(key),
           html: column.html ?? false,
+          styles: column.styles ?? [],
         });
       });
 
+      // Attributes of the row
+      let attrs = {};
+      if (this.config.popup) {
+        attrs.hex = aircraft.hex;
+      }
+
       // Push cells to row
-      aircraftRows.push(cells);
+      aircraftRows.push({
+        cells: cells,
+        attrs: attrs,
+      });
 
       // Update iterator
       i++;
@@ -133,7 +146,10 @@ class Table extends LitElement {
           <tr>
             ${map(
               headerCells,
-              (headerCell) => html`<th>${headerCell.value}</th>`
+              (headerCell) =>
+                html`<th class="${headerCell.styles.join(" ")}">
+                  ${headerCell.value}
+                </th>`
             )}
           </tr>
 
@@ -142,7 +158,10 @@ class Table extends LitElement {
             ? html`<tr>
                 ${map(
                   unitCells,
-                  (unitCell) => html`<td>${unitCell.value}</td>`
+                  (unitCell) =>
+                    html`<td class="${unitCell.styles.join(" ")}">
+                      ${unitCell.value}
+                    </td>`
                 )}
               </tr>`
             : ""}
@@ -151,10 +170,17 @@ class Table extends LitElement {
           <!-- Aircrafts -->
           ${map(
             aircraftRows,
-            (aircraftCells) => html`<tr>
+            (aircraftRow) => html`<tr
+              @click="${this._handleClick}"
+              data-hex="${aircraftRow.attrs.hasOwnProperty("hex")
+                ? aircraftRow.attrs.hex
+                : ""}"
+            >
               ${map(
-                aircraftCells,
-                (aircraftCell) => html`<td>
+                aircraftRow.cells,
+                (aircraftCell) => html`<td
+                  class="${aircraftCell.styles.join(" ")}"
+                >
                   ${aircraftCell.html
                     ? html`${unsafeHTML(aircraftCell.value)}`
                     : html`${aircraftCell.value}`}
@@ -164,6 +190,30 @@ class Table extends LitElement {
           )}
         </tbody>
       </table>`;
+  }
+
+  _handleClick(event) {
+    if (this.config.popup) {
+      let row = event.target.closest("tr");
+      if (row) {
+        // Get hex of clicked row
+        let hex = row.getAttribute("data-hex");
+
+        // Search for the correct aircraft
+        let aircraft = null;
+        for (let i = 0; i < this.aircrafts.length; i++) {
+          if (this.aircrafts[i].hex === hex) {
+            aircraft = this.aircrafts[i];
+            break;
+          }
+        }
+
+        // Show popup if aircraft is found
+        if (aircraft !== null) {
+          new Popup(this.hass, this.config, this.lang, row, aircraft);
+        }
+      }
+    }
   }
 
   static get styles() {
@@ -178,6 +228,16 @@ class Table extends LitElement {
       table tr td {
         padding: 4px;
         text-align: left;
+      }
+
+      table tr th.align-right,
+      table tr td.align-right {
+        text-align: right;
+      }
+
+      table tr th.width-s,
+      table tr td.width-s {
+        width: 20px;
       }
 
       table tr th {
@@ -204,6 +264,10 @@ class Table extends LitElement {
 
       table tbody tr:nth-child(even) td {
         color: var(--fr24-table-even-row-text);
+      }
+
+      table tbody tr[data-hex]:not([data-hex=""]) {
+        cursor: pointer;
       }
     `;
   }
