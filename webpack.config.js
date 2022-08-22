@@ -44,6 +44,12 @@ module.exports = {
       }),
       new TerserPlugin({
         parallel: true,
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
       }),
     ],
   },
