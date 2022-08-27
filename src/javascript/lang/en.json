@@ -10,7 +10,8 @@
       "speed": "Speed",
       "distance": "Distance",
       "track": "Track",
-      "age": "Last message"
+      "age": "Last message",
+      "aircraft_type": "Type"
     },
     "data": {
       "not_available": "N/A"
