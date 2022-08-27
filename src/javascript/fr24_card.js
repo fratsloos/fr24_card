@@ -216,6 +216,10 @@ class Fr24Card extends HTMLElement {
     const states =
       this._hass.states[this._config.entity].attributes[this._config.attribute];
 
+    if (typeof states === "undefined") {
+      return;
+    }
+
     // If no distance service, disable the column
     this._availableColumns.distance.show = true;
     if (this._distance.isSetUp() === false) {
@@ -283,6 +287,11 @@ class Fr24Card extends HTMLElement {
    * Renders the HTML table with the aircrafts in it
    */
   _renderTable() {
+    // Check for data
+    if (this._aircrafts.length === 0) {
+      throw new Error("No data found, check configuration and JSON output");
+    }
+
     // Create a new table
     const table = new Table();
     const needsUnits = this._config.units_in_table === true;
