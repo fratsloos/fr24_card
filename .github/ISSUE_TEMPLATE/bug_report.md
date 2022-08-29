@@ -29,3 +29,13 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+**Configuration**
+Add the config of the card here, eg:
+
+```yaml
+type: custom:fr24-card
+entity: sensor.fr24_aircraft
+```
+
+If possible, also supply the JSON of `aircraft.json`.

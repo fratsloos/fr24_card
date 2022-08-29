@@ -69,6 +69,7 @@ class Fr24Card extends HTMLElement {
       ],
       hide: {
         old_messages: true,
+        empty: [],
       },
       lang: null,
       larger_units: false,
@@ -80,13 +81,47 @@ class Fr24Card extends HTMLElement {
       units: "default",
       units_in_table: false,
       zone: null,
+      colors: {
+        table_head_bg: null,
+        table_head_text: null,
+
+        table_units_bg: null,
+        table_units_text: null,
+
+        table_text: null,
+
+        table_even_row_bg: null,
+        table_even_row_text: null,
+
+        popup_bg: null,
+        popup_text: null,
+
+        popup_table_head_bg: null,
+        popup_table_head_text: null,
+
+        popup_table_even_row_bg: null,
+        popup_table_even_row_text: null,
+      },
     };
 
     // Overwrite config
+    const hideObject = {
+      ...defaultConfig.hide,
+      ...config.hide,
+    };
+
+    const colorsObject = {
+      ...defaultConfig.colors,
+      ...config.colors,
+    };
+
     this._config = {
       ...defaultConfig,
       ...config,
     };
+
+    this._config.hide = hideObject;
+    this._config.colors = colorsObject;
 
     // Check config
     if (!config.entity) {
@@ -135,9 +170,7 @@ class Fr24Card extends HTMLElement {
       this.card.appendChild(stylesheet);
 
       // Load aircraft database
-      let loadAircraftdb = false;
       if (window.fr24db.length === 0) {
-        loadAircraftdb = true;
         const script = document.createElement("script");
         script.setAttribute("async", "");
         script.setAttribute("type", "text/javascript");
@@ -183,6 +216,10 @@ class Fr24Card extends HTMLElement {
     const states =
       this._hass.states[this._config.entity].attributes[this._config.attribute];
 
+    if (typeof states === "undefined") {
+      return;
+    }
+
     // If no distance service, disable the column
     this._availableColumns.distance.show = true;
     if (this._distance.isSetUp() === false) {
@@ -201,6 +238,14 @@ class Fr24Card extends HTMLElement {
 
       if (this._config.hide.old_messages !== false && aircraft.seen > 30) {
         addToAircrafts = false;
+      } else if (this._config.hide.empty.length > 0) {
+        for (let i = 0; i < this._config.hide.empty.length; i++) {
+          let column = this._config.hide.empty[i];
+          if (aircraft[column] === null || aircraft[column] === "") {
+            addToAircrafts = false;
+            break;
+          }
+        }
       }
 
       if (addToAircrafts) {
@@ -242,6 +287,11 @@ class Fr24Card extends HTMLElement {
    * Renders the HTML table with the aircrafts in it
    */
   _renderTable() {
+    // Check for data
+    if (this._aircrafts.length === 0) {
+      throw new Error("No data found, check configuration and JSON output");
+    }
+
     // Create a new table
     const table = new Table();
     const needsUnits = this._config.units_in_table === true;
@@ -265,8 +315,28 @@ class Fr24Card extends HTMLElement {
       // Styles of the cell
       let styles = column.styles ?? null;
 
+      // Inline style
+      let style = "";
+      if (this._config.colors.table_head_bg !== null) {
+        style +=
+          "background-color:" +
+          this._config.colors.table_head_bg +
+          " !important;";
+      }
+      if (this._config.colors.table_head_text !== null) {
+        style +=
+          "color:" + this._config.colors.table_head_text + " !important;";
+      }
+
+      // Attributes
+      let attrs = [];
+      if (style.length > 0) {
+        attrs["style"] = style;
+      }
+
       // Push header cell
-      headerCells.push(table.cell(value, styles, "th"));
+      let cell = table.cell(value, styles, "th", attrs);
+      headerCells.push(cell);
     });
 
     // Add header row
@@ -280,6 +350,7 @@ class Fr24Card extends HTMLElement {
         hasUnits = true;
 
         let unitCells = [];
+
         this._config.columns.forEach((key) => {
           // Get column from the available columns
           let column = this._availableColumns[key];
@@ -295,9 +366,31 @@ class Fr24Card extends HTMLElement {
           // Styles of the cell
           let styles = column.styles ?? null;
 
+          // Inline style
+          let style = "";
+          if (this._config.colors.table_units_bg !== null) {
+            style +=
+              "background-color:" +
+              this._config.colors.table_units_bg +
+              " !important;";
+          }
+          if (this._config.colors.table_units_text !== null) {
+            style +=
+              "color:" + this._config.colors.table_units_text + " !important;";
+          }
+
+          // Attributes
+          let attrs = [];
+          if (style.length > 0) {
+            attrs["style"] = style;
+          }
+
           // Push header cell
-          unitCells.push(table.cell(value, styles, "td"));
+          let cell = table.cell(value, styles, "td", attrs);
+          unitCells.push(cell);
         });
+
+        // Add units row
         table.row(unitCells, "thead");
       }
 
@@ -313,9 +406,38 @@ class Fr24Card extends HTMLElement {
           return;
         }
 
-        let cell = table.cell(aircraft.value(key), column.styles ?? null);
+        // Inline style
+        let style = "";
+        if (i % 2 === 1) {
+          if (this._config.colors.table_even_row_bg !== null) {
+            style +=
+              "background-color:" +
+              this._config.colors.table_even_row_bg +
+              " !important;";
+          }
+          if (this._config.colors.table_even_row_text !== null) {
+            style +=
+              "color:" +
+              this._config.colors.table_even_row_text +
+              " !important;";
+          }
+        } else if (this._config.colors.table_text !== null) {
+          style += "color:" + this._config.colors.table_text + " !important;";
+        }
+
+        // Attributes
+        let attrs = [];
+        if (style.length > 0) {
+          attrs["style"] = style;
+        }
 
         // Push header cell
+        let cell = table.cell(
+          aircraft.value(key),
+          column.styles ?? null,
+          "td",
+          attrs
+        );
         cells.push(cell);
       });
 
@@ -345,6 +467,7 @@ class Fr24Card extends HTMLElement {
       const popup = new Popup(
         this.contentDiv,
         this._hass,
+        this._config,
         this._lang,
         this._aircrafts
       );
