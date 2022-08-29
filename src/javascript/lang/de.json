@@ -11,7 +11,7 @@
       "distance": "Entfernung",
       "track": "Richtung",
       "age": "Letzte Nachricht",
-	  "aircraft_type": "Typ"
+      "aircraft_type": "Typ"
     },
     "data": {
       "not_available": "N/V"
