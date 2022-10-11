@@ -94,6 +94,38 @@ export default class Popup {
                 }
               });
 
+              // Colors
+              const colorPopupBackground =
+                popup.config.colors.popup_bg ?? "var(--card-background-color)";
+              const colorPopupMarkDownText =
+                popup.config.colors.popup_text ??
+                popup.config.colors.table_text ??
+                "var(--primary-color)";
+              const colorPopupMarkDownLink =
+                popup.config.colors.popup_text ??
+                popup.config.colors.table_text ??
+                "var(--primary-color)";
+              const colorPopupTableHeadBackground =
+                popup.config.colors.popup_table_head_bg ??
+                popup.config.colors.table_head_bg ??
+                "var(--primary-color)";
+              const colorPopupTableHeadText =
+                popup.config.colors.popup_table_head_text ??
+                popup.config.colors.table_head_text ??
+                "var(--app-header-text-color, white)";
+              const colorPopupTableRowText =
+                popup.config.colors.popup_text ??
+                popup.config.colors.table_text ??
+                "var(--primary-text-color)";
+              const colorPopupTableRowEvenBackground =
+                popup.config.colors.popup_table_even_row_bg ??
+                popup.config.colors.table_even_row_bg ??
+                "var(--primary-background-color)";
+              const colorPopupTableRowEvenText =
+                popup.config.colors.popup_table_even_row_text ??
+                popup.config.colors.table_even_row_text ??
+                "var(--primary-text-color)";
+
               // Open popup using browser_mod
               handleClick(row, popup.hass, {
                 tap_action: {
@@ -102,6 +134,7 @@ export default class Popup {
                     service: "browser_mod.popup",
                     data: {
                       hide_header: true,
+                      style: `--popup-background-color:${colorPopupBackground};`,
                       content: {
                         type: "markdown",
                         content: content,
@@ -109,34 +142,19 @@ export default class Popup {
                           style: {
                             ".": `
                               ha-markdown{
-                                background:${
-                                  popup.config.colors.popup_bg ??
-                                  "var(--card-background-color)"
-                                };
+                                background:${colorPopupBackground};
                               }`,
                             "ha-markdown$": `
                               font {
-                                color: ${
-                                  popup.config.colors.popup_text ??
-                                  popup.config.colors.table_text ??
-                                  "var(--primary-text-color)"
-                                };
+                                color: ${colorPopupMarkDownText};
                               }
                               font a{
-                                color:${
-                                  popup.config.colors.popup_text ??
-                                  popup.config.colors.table_text ??
-                                  "var(--primary-color)"
-                                };
+                                color:${colorPopupMarkDownLink};
                               }
                               h2{
                                 display:flex;
                                 justify-content:space-between;
-                                color:${
-                                  popup.config.colors.popup_text ??
-                                  popup.config.colors.table_text ??
-                                  "var(--primary-text-color)"
-                                };
+                                color:${colorPopupMarkDownText};
                               }
                               h2 img{
                                 height:.8em;
@@ -153,36 +171,15 @@ export default class Popup {
                                 padding:4px;
                               }
                               table tr th{
-                                background-color:${
-                                  popup.config.colors.popup_table_head_bg ??
-                                  popup.config.colors.table_head_bg ??
-                                  "var(--primary-color)"
-                                };
-                                color:${
-                                  popup.config.colors.popup_table_head_text ??
-                                  popup.config.colors.table_head_text ??
-                                  "var(--app-header-text-color, white)"
-                                };
+                                background-color:${colorPopupTableHeadBackground};
+                                color:${colorPopupTableHeadText};
                               }
                               table tr{
-                                color:${
-                                  popup.config.colors.popup_text ??
-                                  popup.config.colors.table_text ??
-                                  "var(--primary-text-color)"
-                                };
+                                color:${colorPopupTableRowText};
                               }
                               table tr:nth-child(even){
-                                background-color:${
-                                  popup.config.colors.popup_table_even_row_bg ??
-                                  popup.config.colors.table_even_row_bg ??
-                                  "var(--primary-background-color)"
-                                };
-                                color:${
-                                  popup.config.colors
-                                    .popup_table_even_row_text ??
-                                  popup.config.colors.table_even_row_text ??
-                                  "var(--primary-text-color)"
-                                };
+                                background-color:${colorPopupTableRowEvenBackground};
+                                color:${colorPopupTableRowEvenText};
                               }`,
                           },
                         },
