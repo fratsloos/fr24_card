@@ -14,7 +14,8 @@
       "aircraft_type": "Type"
     },
     "data": {
-      "not_available": "Nb"
+      "not_available": "Nb",
+      "none": "Geen vliegtuigen gedetecteerd!"
     }
   },
   "popup": {

@@ -287,11 +287,6 @@ class Fr24Card extends HTMLElement {
    * Renders the HTML table with the aircrafts in it
    */
   _renderTable() {
-    // Check for data
-    if (this._aircrafts.length === 0) {
-      throw new Error("No data found, check configuration and JSON output");
-    }
-
     // Create a new table
     const table = new Table();
     const needsUnits = this._config.units_in_table === true;
@@ -342,14 +337,63 @@ class Fr24Card extends HTMLElement {
     // Add header row
     table.row(headerCells, "thead");
 
-    // Body
-    let i = 0;
-    for (let aircraft of this._aircrafts) {
-      // First aircraft add units in table
-      if (needsUnits && !hasUnits) {
-        hasUnits = true;
+    if (this._aircrafts.length > 0) {
+      // Body
+      let i = 0;
+      for (let aircraft of this._aircrafts) {
+        // First aircraft add units in table
+        if (needsUnits && !hasUnits) {
+          hasUnits = true;
 
-        let unitCells = [];
+          let unitCells = [];
+
+          this._config.columns.forEach((key) => {
+            // Get column from the available columns
+            let column = this._availableColumns[key];
+
+            // Check if column is visible
+            if (column.show === false) {
+              return;
+            }
+
+            // Content of the cell
+            let value = aircraft.units[key] ?? "";
+
+            // Styles of the cell
+            let styles = column.styles ?? null;
+
+            // Inline style
+            let style = "";
+            if (this._config.colors.table_units_bg !== null) {
+              style +=
+                "background-color:" +
+                this._config.colors.table_units_bg +
+                " !important;";
+            }
+            if (this._config.colors.table_units_text !== null) {
+              style +=
+                "color:" +
+                this._config.colors.table_units_text +
+                " !important;";
+            }
+
+            // Attributes
+            let attrs = [];
+            if (style.length > 0) {
+              attrs["style"] = style;
+            }
+
+            // Push header cell
+            let cell = table.cell(value, styles, "td", attrs);
+            unitCells.push(cell);
+          });
+
+          // Add units row
+          table.row(unitCells, "thead");
+        }
+
+        // Add aircraft
+        let cells = [];
 
         this._config.columns.forEach((key) => {
           // Get column from the available columns
@@ -360,23 +404,23 @@ class Fr24Card extends HTMLElement {
             return;
           }
 
-          // Content of the cell
-          let value = aircraft.units[key] ?? "";
-
-          // Styles of the cell
-          let styles = column.styles ?? null;
-
           // Inline style
           let style = "";
-          if (this._config.colors.table_units_bg !== null) {
-            style +=
-              "background-color:" +
-              this._config.colors.table_units_bg +
-              " !important;";
-          }
-          if (this._config.colors.table_units_text !== null) {
-            style +=
-              "color:" + this._config.colors.table_units_text + " !important;";
+          if (i % 2 === 1) {
+            if (this._config.colors.table_even_row_bg !== null) {
+              style +=
+                "background-color:" +
+                this._config.colors.table_even_row_bg +
+                " !important;";
+            }
+            if (this._config.colors.table_even_row_text !== null) {
+              style +=
+                "color:" +
+                this._config.colors.table_even_row_text +
+                " !important;";
+            }
+          } else if (this._config.colors.table_text !== null) {
+            style += "color:" + this._config.colors.table_text + " !important;";
           }
 
           // Attributes
@@ -386,81 +430,58 @@ class Fr24Card extends HTMLElement {
           }
 
           // Push header cell
-          let cell = table.cell(value, styles, "td", attrs);
-          unitCells.push(cell);
+          let cell = table.cell(
+            aircraft.value(key),
+            column.styles ?? null,
+            "td",
+            attrs
+          );
+          cells.push(cell);
         });
 
-        // Add units row
-        table.row(unitCells, "thead");
-      }
-
-      // Add aircraft
-      let cells = [];
-
-      this._config.columns.forEach((key) => {
-        // Get column from the available columns
-        let column = this._availableColumns[key];
-
-        // Check if column is visible
-        if (column.show === false) {
-          return;
-        }
-
-        // Inline style
-        let style = "";
-        if (i % 2 === 1) {
-          if (this._config.colors.table_even_row_bg !== null) {
-            style +=
-              "background-color:" +
-              this._config.colors.table_even_row_bg +
-              " !important;";
-          }
-          if (this._config.colors.table_even_row_text !== null) {
-            style +=
-              "color:" +
-              this._config.colors.table_even_row_text +
-              " !important;";
-          }
-        } else if (this._config.colors.table_text !== null) {
-          style += "color:" + this._config.colors.table_text + " !important;";
-        }
-
-        // Attributes
+        // Attributes of the row
         let attrs = [];
-        if (style.length > 0) {
-          attrs["style"] = style;
+        if (this._config.popup) {
+          attrs["data-hex"] = aircraft.hex;
         }
 
-        // Push header cell
-        let cell = table.cell(
-          aircraft.value(key),
-          column.styles ?? null,
-          "td",
-          attrs
-        );
-        cells.push(cell);
-      });
+        // Add body row
+        table.row(cells, null, attrs);
 
-      // Attributes of the row
-      let attrs = [];
-      if (this._config.popup) {
-        attrs["data-hex"] = aircraft.hex;
-      }
+        // Update iterator
+        i++;
 
-      // Add body row
-      table.row(cells, null, attrs);
-
-      // Update iterator
-      i++;
-
-      // Check for limit
-      if (Number.isInteger(this._config.limit) && this._config.limit === i) {
-        break;
+        // Check for limit
+        if (Number.isInteger(this._config.limit) && this._config.limit === i) {
+          break;
+        }
       }
     }
 
+    // Get content
+    let html = table.getHtml();
+
+    // Add warning when no aircrafts detected
+    if (this._aircrafts.length === 0) {
+      let style = "";
+      if (this._config.colors.table_even_row_bg !== null) {
+        style +=
+          "background-color:" +
+          this._config.colors.table_even_row_bg +
+          " !important;";
+      }
+      if (this._config.colors.table_even_row_text !== null) {
+        style +=
+          "color:" + this._config.colors.table_even_row_text + " !important;";
+      }
+
+      html += `<div class="no-data"${style !== "" ? ` style="${style}"` : ""}>${
+        this._lang.content.table.data.none
+      }</div>`;
+    }
+
     // Set content
-    this.contentDiv.innerHTML = table.getHtml();
+    this.contentDiv.innerHTML = html;
 
     // Add popup if configured
     if (this._config.popup) {
