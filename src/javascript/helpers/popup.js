@@ -59,6 +59,12 @@ export default class Popup {
               // Title of the airplane
               let title =
                 aircraft.registration || aircraft.flight || aircraft.hex;
+              let subtitle;
+              if (aircraft.registration) {
+                subtitle = aircraft.flight || aircraft.hex;
+              } else {
+                subtitle = aircraft.hex;
+              }
 
               // Check if photos found
               if (json.photos.length > 0) {
@@ -76,7 +82,7 @@ export default class Popup {
               if (aircraft.flag) {
                 content += `<img src="${aircraft.flag}" height="15" />`;
               }
-              content += `${title}</span><span>${aircraft.value(
+              content += `${subtitle}</span><span>${aircraft.value(
                 "icon",
                 true
               )}</span>\n`;
@@ -135,6 +141,7 @@ export default class Popup {
                     data: {
                       hide_header: true,
                       style: `--popup-background-color:${colorPopupBackground};`,
+                      title: title,
                       content: {
                         type: "markdown",
                         content: content,
@@ -143,6 +150,9 @@ export default class Popup {
                             ".": `
                               ha-markdown{
                                 background:${colorPopupBackground};
+                              }
+                              ha-markdown.no-header{
+                                padding-top:0 !important;
                               }`,
                             "ha-markdown$": `
                               font {
