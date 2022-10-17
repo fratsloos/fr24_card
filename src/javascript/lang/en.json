@@ -15,7 +15,8 @@
     },
     "data": {
       "not_available": "N/A",
-      "none": "No aircrafts detected!"
+      "none": "No aircrafts detected!",
+      "undefined": "The configurated entity doesn't contain data!"
     }
   },
   "popup": {

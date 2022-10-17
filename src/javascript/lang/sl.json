@@ -15,7 +15,8 @@
     },
     "data": {
       "not_available": "N/A",
-      "none": "Ni zaznanih letal!"
+      "none": "Ni zaznanih letal!",
+      "undefined": "Konfigurirana entiteta ne vsebuje podatkov!"
     }
   },
   "popup": {

@@ -21,6 +21,7 @@ window.fr24db = [];
 class Fr24Card extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
+    this._isStateUndefined = false;
 
     // Update the card
     if (!this._config) {
@@ -217,6 +218,7 @@ class Fr24Card extends HTMLElement {
       this._hass.states[this._config.entity].attributes[this._config.attribute];
 
     if (typeof states === "undefined") {
+      this._isStateUndefined = true;
       return;
     }
 
@@ -475,9 +477,13 @@ class Fr24Card extends HTMLElement {
           "color:" + this._config.colors.table_even_row_text + " !important;";
       }
 
-      html += `<div class="no-data"${style !== "" ? ` style="${style}"` : ""}>${
-        this._lang.content.table.data.none
-      }</div>`;
+      let error = this._isStateUndefined
+        ? this._lang.content.table.data.undefined
+        : this._lang.content.table.data.none;
+
+      html += `<div class="no-data"${
+        style !== "" ? ` style="${style}"` : ""
+      }>${error}</div>`;
     }
 
     // Set content

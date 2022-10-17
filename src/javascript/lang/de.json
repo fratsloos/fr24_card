@@ -15,7 +15,8 @@
     },
     "data": {
       "not_available": "N/V",
-      "none": "Keine Flugzeuge erkannt!"
+      "none": "Keine Flugzeuge erkannt!",
+      "undefined": "Die konfigurierte Entität enthält keine Daten!"
     }
   },
   "popup": {
