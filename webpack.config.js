@@ -4,16 +4,16 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
-  entry: "./src/javascript/fr24_card.js",
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "fr24_card.js",
-  },
+  // entry: "./src/javascript/fr24_card.js",
+  // output: {
+  //   path: path.resolve(__dirname, "dist"),
+  //   filename: "fr24_card.js",
+  // },
 
   entry: "./src/javascript/fr24_card_lit.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "fr24_card_lit.js",
+    filename: "fr24_card.js",
   },
 
   module: {

@@ -10,7 +10,7 @@ import Table from "./helpers/table-lit.js";
 // Add card to the custom cards
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "fr24-card-lit",
+  type: "fr24-card",
   name: "Flight Radar card (Lit)",
   description: "Card that shows the tracked flights",
   preview: false,
@@ -18,7 +18,7 @@ window.customCards.push({
 
 window.fr24db = [];
 
-class FR24CardLit extends LitElement {
+class FR24Card extends LitElement {
   static get properties() {
     return {
       hass: {},
@@ -43,18 +43,16 @@ class FR24CardLit extends LitElement {
       this._parseAircrafts();
 
       return html`
-        <fr24-card>
-          <ha-card header="${this.config.title}">
-            <div class="card-content">
-              <fr24-table
-                .config="${this.config}"
-                .hass="${this.hass}"
-                .aircrafts="${this._aircrafts}"
-                .lang=${this._lang.content}
-              ></fr24-table>
-            </div>
-          </ha-card>
-        </fr24-card>
+        <ha-card header="${this.config.title}">
+          <div class="card-content">
+            <fr24-table
+              .config="${this.config}"
+              .hass="${this.hass}"
+              .aircrafts="${this._aircrafts}"
+              .lang=${this._lang.content}
+            ></fr24-table>
+          </div>
+        </ha-card>
       `;
     }
     return html`<fr24-card>Entity <b>not</b> set</fr24-card>`;
@@ -254,4 +252,4 @@ class FR24CardLit extends LitElement {
   }
 }
 
-customElements.define("fr24-card-lit", FR24CardLit);
+customElements.define("fr24-card", FR24Card);

@@ -24,7 +24,6 @@ export default class Popup {
       .then(function (data) {
         // Parse the data
         let json = JSON.parse(data);
-        console.log("json", json);
 
         // Content of the popup
         let content = "";
@@ -34,6 +33,13 @@ export default class Popup {
           popup.aircraft.registration ||
           popup.aircraft.flight ||
           popup.aircraft.hex;
+
+        let subtitle;
+        if (popup.aircraft.registration) {
+          subtitle = popup.aircraft.flight || popup.aircraft.hex;
+        } else {
+          subtitle = popup.aircraft.hex;
+        }
 
         // Check if photos found
         if (json.photos.length > 0) {
@@ -51,7 +57,7 @@ export default class Popup {
         if (popup.aircraft.flag) {
           content += `<img src="${popup.aircraft.flag}" height="15" />`;
         }
-        content += `${title}</span><span>${popup.aircraft.value(
+        content += `${subtitle}</span><span>${popup.aircraft.value(
           "icon",
           true
         )}</span>\n`;
@@ -69,48 +75,72 @@ export default class Popup {
           }
         });
 
+        // Colors
+        const colorPopupBackground =
+          popup.config.colors.popup_bg ?? "var(--card-background-color)";
+        const colorPopupMarkDownText =
+          popup.config.colors.popup_text ??
+          popup.config.colors.table_text ??
+          "var(--primary-color)";
+        const colorPopupMarkDownLink =
+          popup.config.colors.popup_text ??
+          popup.config.colors.table_text ??
+          "var(--primary-color)";
+        const colorPopupTableHeadBackground =
+          popup.config.colors.popup_table_head_bg ??
+          popup.config.colors.table_head_bg ??
+          "var(--primary-color)";
+        const colorPopupTableHeadText =
+          popup.config.colors.popup_table_head_text ??
+          popup.config.colors.table_head_text ??
+          "var(--app-header-text-color, white)";
+        const colorPopupTableRowText =
+          popup.config.colors.popup_text ??
+          popup.config.colors.table_text ??
+          "var(--primary-text-color)";
+        const colorPopupTableRowEvenBackground =
+          popup.config.colors.popup_table_even_row_bg ??
+          popup.config.colors.table_even_row_bg ??
+          "var(--primary-background-color)";
+        const colorPopupTableRowEvenText =
+          popup.config.colors.popup_table_even_row_text ??
+          popup.config.colors.table_even_row_text ??
+          "var(--primary-text-color)";
+
         // Open popup using browser_mod
         handleClick(popup.row, popup.hass, {
           tap_action: {
             action: "fire-dom-event",
             browser_mod: {
-              command: "popup",
-              hide_header: true,
-              card: {
-                type: "markdown",
-                content: content,
-                card_mod: {
-                  style: {
-                    ".": `
+              service: "browser_mod.popup",
+              data: {
+                hide_header: true,
+                style: `--popup-background-color:${colorPopupBackground};`,
+                title: title,
+                content: {
+                  type: "markdown",
+                  content: content,
+                  card_mod: {
+                    style: {
+                      ".": `
                         ha-markdown{
-                          background:${
-                            popup.config.colors.popup_bg ??
-                            "var(--card-background-color)"
-                          };
+                          background:${colorPopupBackground};
+                        }
+                        ha-markdown.no-header{
+                          padding-top:0 !important;
+
                         }`,
-                    "ha-markdown$": `
+                      "ha-markdown$": `
                         font {
-                          color: ${
-                            popup.config.colors.popup_text ??
-                            popup.config.colors.table_text ??
-                            "var(--primary-text-color)"
-                          };
+                          color: ${colorPopupMarkDownText};
                         }
                         font a{
-                          color:${
-                            popup.config.colors.popup_text ??
-                            popup.config.colors.table_text ??
-                            "var(--primary-color)"
-                          };
+                          color:${colorPopupMarkDownLink};
                         }
                         h2{
                           display:flex;
                           justify-content:space-between;
-                          color:${
-                            popup.config.colors.popup_text ??
-                            popup.config.colors.table_text ??
-                            "var(--primary-text-color)"
-                          };
+                          color:${colorPopupMarkDownText};
                         }
                         h2 img{
                           height:.8em;
@@ -127,36 +157,17 @@ export default class Popup {
                           padding:4px;
                         }
                         table tr th{
-                          background-color:${
-                            popup.config.colors.popup_table_head_bg ??
-                            popup.config.colors.table_head_bg ??
-                            "var(--primary-color)"
-                          };
-                          color:${
-                            popup.config.colors.popup_table_head_text ??
-                            popup.config.colors.table_head_text ??
-                            "var(--app-header-text-color, white)"
-                          };
+                          background-color:${colorPopupTableHeadBackground};
+                          color:${colorPopupTableHeadText};
                         }
                         table tr{
-                          color:${
-                            popup.config.colors.popup_text ??
-                            popup.config.colors.table_text ??
-                            "var(--primary-text-color)"
-                          };
+                          color:${colorPopupTableRowText};
                         }
                         table tr:nth-child(even){
-                          background-color:${
-                            popup.config.colors.popup_table_even_row_bg ??
-                            popup.config.colors.table_even_row_bg ??
-                            "var(--primary-background-color)"
-                          };
-                          color:${
-                            popup.config.colors.popup_table_even_row_text ??
-                            popup.config.colors.table_even_row_text ??
-                            "var(--primary-text-color)"
-                          };
+                          background-color:${colorPopupTableRowEvenBackground};
+                          color:${colorPopupTableRowEvenText};
                         }`,
+                    },
                   },
                 },
               },
