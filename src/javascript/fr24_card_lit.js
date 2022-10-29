@@ -6,6 +6,7 @@ import Distance from "./helpers/distance.js";
 import Lang from "./helpers/lang.js";
 import Path from "./helpers/path.js";
 import Table from "./helpers/table-lit.js";
+import Warning from "./helpers/warning.js";
 
 // Add card to the custom cards
 window.customCards = window.customCards || [];
@@ -32,6 +33,9 @@ class FR24Card extends LitElement {
    * @returns html
    */
   render() {
+    // State for undefined aircrafts warning
+    this._isStateUndefined = false;
+
     // Distance service
     this._distance = new Distance(this.config, this.hass);
 
@@ -42,14 +46,36 @@ class FR24Card extends LitElement {
       // Parse aircrafts
       this._parseAircrafts();
 
+      // Check for warning
+      let warning = null;
+      if (this._isStateUndefined) {
+        warning = this._lang.content.table.data.undefined;
+      } else if (this._aircrafts.length < 1) {
+        warning = this._lang.content.table.data.none;
+      }
+
+      if (warning !== null) {
+        // Show warning
+        return html`
+          <ha-card header="${this.config.title}">
+            <div class="card-content">
+              <fr24-warning
+                .config="${this.config}"
+                .message="${warning}"
+              ></fr24-warning>
+            </div>
+          </ha-card>
+        `;
+      }
+
       return html`
         <ha-card header="${this.config.title}">
           <div class="card-content">
             <fr24-table
               .config="${this.config}"
               .hass="${this.hass}"
+              .lang="${this._lang.content}"
               .aircrafts="${this._aircrafts}"
-              .lang=${this._lang.content}
             ></fr24-table>
           </div>
         </ha-card>
@@ -188,6 +214,11 @@ class FR24Card extends LitElement {
     const states =
       this.hass.states[this.config.entity].attributes[this.config.attribute];
 
+    if (typeof states === "undefined") {
+      this._isStateUndefined = true;
+      return;
+    }
+
     // If no distance service, disable the column
     this._availableColumns.distance.show = true;
     if (this._distance.isSetUp() === false) {
@@ -221,33 +252,35 @@ class FR24Card extends LitElement {
       }
     });
 
-    // Sort aircrafts
-    this._aircrafts.sort(function (a, b) {
-      // Column to sort by
-      let column = fr24.config.sort || "altitude";
+    if (this._aircrafts.length > 1) {
+      // Sort aircrafts
+      this._aircrafts.sort(function (a, b) {
+        // Column to sort by
+        let column = fr24.config.sort || "altitude";
 
-      // Values
-      let valueA = a[column];
-      let valueB = b[column];
+        // Values
+        let valueA = a[column];
+        let valueB = b[column];
 
-      // Equal items sort equally
-      if (valueA === valueB) {
-        return 0;
-      }
-      // Nulls or empties sort after anything else
-      else if (valueA === null || valueA === "") {
-        return 1;
-      } else if (valueB === null || valueB === "") {
-        return -1;
-      }
-      // Sort ascending
-      else {
-        return valueA < valueB ? -1 : 1;
-      }
-    });
+        // Equal items sort equally
+        if (valueA === valueB) {
+          return 0;
+        }
+        // Nulls or empties sort after anything else
+        else if (valueA === null || valueA === "") {
+          return 1;
+        } else if (valueB === null || valueB === "") {
+          return -1;
+        }
+        // Sort ascending
+        else {
+          return valueA < valueB ? -1 : 1;
+        }
+      });
 
-    if (this.config.order === "desc") {
-      this._aircrafts = this._aircrafts.reverse();
+      if (this.config.order === "desc") {
+        this._aircrafts = this._aircrafts.reverse();
+      }
     }
   }
 }
