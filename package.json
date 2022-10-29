@@ -1,27 +1,35 @@
 {
   "name": "fr24card",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Lovelace card for showing tracked flights",
+  "main": "fr24card.js",
   "scripts": {
-    "development": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=webpack.config.js",
+    "development": "NODE_ENV=development npx rollup --config --watch",
     "watch": "npm run development -- --watch",
     "prod": "npm run production",
-    "production": "NODE_ENV=production node_modules/webpack/bin/webpack.js --config=webpack.config.js",
+    "production": "NODE_ENV=production npx rollup --config",
     "database": "node build/database.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "FR24",
+    "Lovelace"
+  ],
+  "author": "Fratsloos",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
-    "css-loader": "^6.7.1",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.1.0",
     "custom-card-helpers": "^1.8.0",
     "deep-merge-object": "^0.1.1",
     "dotenv": "^16.0.1",
-    "less": "^4.1.2",
-    "less-loader": "^11.0.0",
-    "style-loader": "^3.3.1",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
+    "rollup": "^3.2.3",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-minify-html-template-literals": "^1.2.0"
+  },
+  "dependencies": {
+    "lit": "^2.4.0"
   }
 }

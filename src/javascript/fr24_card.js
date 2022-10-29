@@ -5,8 +5,8 @@ import availableColumns from "./config/columns.json";
 import Distance from "./helpers/distance.js";
 import Lang from "./helpers/lang.js";
 import Path from "./helpers/path.js";
-import Table from "./helpers/tags/table.js";
-import Warning from "./helpers/tags/warning.js";
+import { Table } from "./helpers/tags/table.js";
+import { Warning } from "./helpers/tags/warning.js";
 
 // Add card to the custom cards
 window.customCards = window.customCards || [];

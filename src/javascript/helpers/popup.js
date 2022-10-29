@@ -122,51 +122,8 @@ export default class Popup {
                   content: content,
                   card_mod: {
                     style: {
-                      ".": `
-                        ha-markdown{
-                          background:${colorPopupBackground};
-                        }
-                        ha-markdown.no-header{
-                          padding-top:0 !important;
-
-                        }`,
-                      "ha-markdown$": `
-                        font {
-                          color: ${colorPopupMarkDownText};
-                        }
-                        font a{
-                          color:${colorPopupMarkDownLink};
-                        }
-                        h2{
-                          display:flex;
-                          justify-content:space-between;
-                          color:${colorPopupMarkDownText};
-                        }
-                        h2 img{
-                          height:.8em;
-                          margin:0 10px 0 0;
-                          display:inline-block;
-                          vertical-align:baseline;
-                        }
-                        table{
-                          width:100%;
-                          border-spacing:0;
-                          border-collapse:collapse;
-                        }
-                        table tr th, table tr td{
-                          padding:4px;
-                        }
-                        table tr th{
-                          background-color:${colorPopupTableHeadBackground};
-                          color:${colorPopupTableHeadText};
-                        }
-                        table tr{
-                          color:${colorPopupTableRowText};
-                        }
-                        table tr:nth-child(even){
-                          background-color:${colorPopupTableRowEvenBackground};
-                          color:${colorPopupTableRowEvenText};
-                        }`,
+                      ".": `ha-markdown{background:${colorPopupBackground};}ha-markdown.no-header{padding-top:0 !important;}`,
+                      "ha-markdown$": `font {color: ${colorPopupMarkDownText};}font a{color:${colorPopupMarkDownLink};}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}`,
                     },
                   },
                 },

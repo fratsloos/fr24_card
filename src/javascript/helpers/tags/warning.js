@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-class Warning extends LitElement {
+export class Warning extends LitElement {
   static get properties() {
     return {
       config: { type: Object },
