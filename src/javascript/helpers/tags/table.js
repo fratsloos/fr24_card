@@ -1,8 +1,8 @@
 import { LitElement, html, css } from "lit";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import availableColumns from "../config/columns.json";
-import Popup from "./popup.js";
+import availableColumns from "../../config/columns.json";
+import Popup from "../popup.js";
 
 class Table extends LitElement {
   static get properties() {

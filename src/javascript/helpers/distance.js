@@ -60,7 +60,7 @@ export default class Distance {
     // Round on the meter
     distance = Math.round(distance);
 
-    // Convert distance to configures unit
+    // Convert distance to configured unit
     switch (this.units) {
       case "metric":
         if (this.config.larger_units) {

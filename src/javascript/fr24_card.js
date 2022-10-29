@@ -1,11 +1,12 @@
-import Path from "./helpers/path.js";
+import { LitElement, html, css } from "lit";
+import { objectMerge } from "deep-merge-object";
 import Aircraft from "./helpers/aircraft.js";
-import Distance from "./helpers/distance.js";
-import Popup from "./helpers/popup.js";
-import Lang from "./helpers/lang.js";
-import Table from "./helpers/table.js";
 import availableColumns from "./config/columns.json";
-import "../styles/fr24_card.less";
+import Distance from "./helpers/distance.js";
+import Lang from "./helpers/lang.js";
+import Path from "./helpers/path.js";
+import Table from "./helpers/tags/table.js";
+import Warning from "./helpers/tags/warning.js";
 
 // Add card to the custom cards
 window.customCards = window.customCards || [];
@@ -18,45 +19,96 @@ window.customCards.push({
 
 window.fr24db = [];
 
-class Fr24Card extends HTMLElement {
-  set hass(hass) {
-    this._hass = hass;
-
-    // Update the card
-    if (!this._config) {
-      // Can't assume setConfig is called before hass is set
-      return;
-    }
-
-    // Distance service
-    this._distance = new Distance(this._config, this._hass);
-
-    // Set lang
-    this._lang = new Lang(this._config, this._hass);
-
-    // Parse aircrafts
-    this._parseAircrafts();
-
-    // Render content of the card
-    this._renderTable();
+class FR24Card extends LitElement {
+  static get properties() {
+    return {
+      hass: {},
+      config: {},
+    };
   }
 
   /**
-   * Parses the config of the card and merges it with the default config to
-   * create one config object
+   * Renders the content of the card
    *
-   * @param {Object} config Config from the card
+   * @returns html
+   */
+  render() {
+    // State for undefined aircrafts warning
+    this._isStateUndefined = false;
+
+    // Distance service
+    this._distance = new Distance(this.config, this.hass);
+
+    // Set lang
+    this._lang = new Lang(this.config, this.hass);
+
+    if (this.config.entity) {
+      // Parse aircrafts
+      this._parseAircrafts();
+
+      // Check for warning
+      let warning = null;
+      if (this._isStateUndefined) {
+        warning = this._lang.content.table.data.undefined;
+      } else if (this._aircrafts.length < 1) {
+        warning = this._lang.content.table.data.none;
+      }
+
+      if (warning !== null) {
+        // Show warning
+        return html`
+          <ha-card header="${this.config.title}">
+            <div class="card-content">
+              <fr24-warning
+                .config="${this.config}"
+                .message="${warning}"
+              ></fr24-warning>
+            </div>
+          </ha-card>
+        `;
+      }
+
+      return html`
+        <ha-card header="${this.config.title}">
+          <div class="card-content">
+            <fr24-table
+              .config="${this.config}"
+              .hass="${this.hass}"
+              .lang="${this._lang.content}"
+              .aircrafts="${this._aircrafts}"
+            ></fr24-table>
+          </div>
+        </ha-card>
+      `;
+    }
+    return html`<ha-card>Entity <b>not</b> set</ha-card>`;
+  }
+
+  /**
+   * Merges the default config with the config from the front-end and checks if
+   * the config is valid
+   *
+   * @param {Object} config
    */
   setConfig(config) {
     // Set path
     const path = new Path();
     this._path = path.getPath();
 
+    // Load aircraft database
+    if (window.fr24db.length === 0) {
+      const script = document.createElement("script");
+      script.setAttribute("async", "");
+      script.setAttribute("type", "text/javascript");
+      script.setAttribute("src", this._path + "fr24_database.js");
+      document.head.appendChild(script);
+    }
+
     // Available columns
     this._availableColumns = availableColumns;
 
-    // Default config
-    const defaultConfig = {
+    // Merge config with the default config
+    let defaultConfig = {
       attribute: "aircraft",
       columns: [
         "flag",
@@ -104,32 +156,19 @@ class Fr24Card extends HTMLElement {
       },
     };
 
-    // Overwrite config
-    const hideObject = {
-      ...defaultConfig.hide,
-      ...config.hide,
-    };
+    config = objectMerge(defaultConfig, config);
 
-    const colorsObject = {
-      ...defaultConfig.colors,
-      ...config.colors,
-    };
-
-    this._config = {
-      ...defaultConfig,
-      ...config,
-    };
-
-    this._config.hide = hideObject;
-    this._config.colors = colorsObject;
-
-    // Check config
+    // Check for entity
     if (!config.entity) {
-      throw new Error("You need to define an entity");
+      throw new Error("You need to define and entity");
+    } else if (!["default", "metric"].includes(config.units)) {
+      throw new Error("Unit '" + config.units + "' not supported");
+    } else if (!["asc", "desc"].includes(config.order)) {
+      throw new Error("Order '" + config.order + "' not supported");
     }
 
     let totalWeight = 0;
-    this._config.columns.forEach((column) => {
+    config.columns.forEach((column) => {
       if (!this._availableColumns.hasOwnProperty(column)) {
         throw new Error("Column '" + column + "' does not exist");
       }
@@ -141,49 +180,8 @@ class Fr24Card extends HTMLElement {
       throw new Error("Too many columns defined");
     }
 
-    if (!["default", "metric"].includes(this._config.units)) {
-      throw new Error("Unit '" + this._config.units + "' not supported");
-    }
-
-    if (!["asc", "desc"].includes(this._config.order)) {
-      throw new Error("Order '" + this._config.order + "' not supported");
-    }
-
-    // Make sure this only runs once
-    if (!this.setupComplete) {
-      // Create card
-      this.card = document.createElement("ha-card");
-
-      // Add the div for the content of the card
-      this.contentDiv = document.createElement("div");
-      this.contentDiv.setAttribute("class", "card-content");
-      this.card.appendChild(this.contentDiv);
-
-      // Add card to the dashboard
-      this.appendChild(this.card);
-
-      // Add stylesheet
-      const stylesheet = document.createElement("link");
-      stylesheet.setAttribute("type", "text/css");
-      stylesheet.setAttribute("rel", "stylesheet");
-      stylesheet.setAttribute("href", this._path + "fr24_card.css");
-      this.card.appendChild(stylesheet);
-
-      // Load aircraft database
-      if (window.fr24db.length === 0) {
-        const script = document.createElement("script");
-        script.setAttribute("async", "");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", this._path + "fr24_database.js");
-        document.head.appendChild(script);
-      }
-
-      // Setup is complete
-      this.setupComplete = true;
-    }
-
-    // Update header of the card
-    this.card.setAttribute("header", config.title ?? "");
+    // Set config
+    this.config = config;
   }
 
   /**
@@ -195,7 +193,7 @@ class Fr24Card extends HTMLElement {
    * @returns {Integer} Height of the card
    */
   getCardSize() {
-    return Number.isInteger(this._config.limit) ? this._config.limit + 5 : 100;
+    return Number.isInteger(this.config.limit) ? this.config.limit + 5 : 100;
   }
 
   /**
@@ -208,13 +206,18 @@ class Fr24Card extends HTMLElement {
   }
 
   /**
-   * Parses the data retrieved from the entity in to an usable object
+   * Parses the data from the entity in an array with Aircraft objects
    */
   _parseAircrafts() {
     const fr24 = this;
     this._aircrafts = [];
     const states =
-      this._hass.states[this._config.entity].attributes[this._config.attribute];
+      this.hass.states[this.config.entity].attributes[this.config.attribute];
+
+    if (typeof states === "undefined") {
+      this._isStateUndefined = true;
+      return;
+    }
 
     // If no distance service, disable the column
     this._availableColumns.distance.show = true;
@@ -226,17 +229,17 @@ class Fr24Card extends HTMLElement {
     states.forEach((state) => {
       let aircraft = new Aircraft(
         state,
-        this._config,
+        this.config,
         this._distance,
         this._lang
       );
       let addToAircrafts = true;
 
-      if (this._config.hide.old_messages !== false && aircraft.seen > 30) {
+      if (this.config.hide.old_messages !== false && aircraft.seen > 30) {
         addToAircrafts = false;
-      } else if (this._config.hide.empty.length > 0) {
-        for (let i = 0; i < this._config.hide.empty.length; i++) {
-          let column = this._config.hide.empty[i];
+      } else if (this.config.hide.empty.length > 0) {
+        for (let i = 0; i < this.config.hide.empty.length; i++) {
+          let column = this.config.hide.empty[i];
           if (aircraft[column] === null || aircraft[column] === "") {
             addToAircrafts = false;
             break;
@@ -249,221 +252,37 @@ class Fr24Card extends HTMLElement {
       }
     });
 
-    // Sort aircrafts
-    this._aircrafts.sort(function (a, b) {
-      // Column to sort by
-      let column = fr24._config.sort || "altitude";
+    if (this._aircrafts.length > 1) {
+      // Sort aircrafts
+      this._aircrafts.sort(function (a, b) {
+        // Column to sort by
+        let column = fr24.config.sort || "altitude";
 
-      // Values
-      let valueA = a[column];
-      let valueB = b[column];
+        // Values
+        let valueA = a[column];
+        let valueB = b[column];
 
-      // Equal items sort equally
-      if (valueA === valueB) {
-        return 0;
-      }
-      // Nulls or empties sort after anything else
-      else if (valueA === null || valueA === "") {
-        return 1;
-      } else if (valueB === null || valueB === "") {
-        return -1;
-      }
-      // Sort ascending
-      else {
-        return valueA < valueB ? -1 : 1;
-      }
-    });
-
-    if (this._config.order === "desc") {
-      this._aircrafts = this._aircrafts.reverse();
-    }
-  }
-
-  /**
-   * Renders the HTML table with the aircrafts in it
-   */
-  _renderTable() {
-    // Create a new table
-    const table = new Table();
-    const needsUnits = this._config.units_in_table === true;
-    let hasUnits = false;
-
-    // Header
-    let headerCells = [];
-
-    this._config.columns.forEach((key) => {
-      // Get column from the available columns
-      let column = this._availableColumns[key];
-
-      // Check if column is visible
-      if (column.show === false) {
-        return;
-      }
-
-      // Content of the cell
-      let value = this._lang.content.table.head[key] ?? "";
-
-      // Styles of the cell
-      let styles = column.styles ?? null;
-
-      // Inline style
-      let style = "";
-      if (this._config.colors.table_head_bg !== null) {
-        style +=
-          "background-color:" +
-          this._config.colors.table_head_bg +
-          " !important;";
-      }
-      if (this._config.colors.table_head_text !== null) {
-        style +=
-          "color:" + this._config.colors.table_head_text + " !important;";
-      }
-
-      // Attributes
-      let attrs = [];
-      if (style.length > 0) {
-        attrs["style"] = style;
-      }
-
-      // Push header cell
-      let cell = table.cell(value, styles, "th", attrs);
-      headerCells.push(cell);
-    });
-
-    // Add header row
-    table.row(headerCells, "thead");
-
-    // Body
-    let i = 0;
-    for (let aircraft of this._aircrafts) {
-      // First aircraft add units in table
-      if (needsUnits && !hasUnits) {
-        hasUnits = true;
-
-        let unitCells = [];
-
-        this._config.columns.forEach((key) => {
-          // Get column from the available columns
-          let column = this._availableColumns[key];
-
-          // Check if column is visible
-          if (column.show === false) {
-            return;
-          }
-
-          // Content of the cell
-          let value = aircraft.units[key] ?? "";
-
-          // Styles of the cell
-          let styles = column.styles ?? null;
-
-          // Inline style
-          let style = "";
-          if (this._config.colors.table_units_bg !== null) {
-            style +=
-              "background-color:" +
-              this._config.colors.table_units_bg +
-              " !important;";
-          }
-          if (this._config.colors.table_units_text !== null) {
-            style +=
-              "color:" + this._config.colors.table_units_text + " !important;";
-          }
-
-          // Attributes
-          let attrs = [];
-          if (style.length > 0) {
-            attrs["style"] = style;
-          }
-
-          // Push header cell
-          let cell = table.cell(value, styles, "td", attrs);
-          unitCells.push(cell);
-        });
-
-        // Add units row
-        table.row(unitCells, "thead");
-      }
-
-      // Add aircraft
-      let cells = [];
-
-      this._config.columns.forEach((key) => {
-        // Get column from the available columns
-        let column = this._availableColumns[key];
-
-        // Check if column is visible
-        if (column.show === false) {
-          return;
+        // Equal items sort equally
+        if (valueA === valueB) {
+          return 0;
         }
-
-        // Inline style
-        let style = "";
-        if (i % 2 === 1) {
-          if (this._config.colors.table_even_row_bg !== null) {
-            style +=
-              "background-color:" +
-              this._config.colors.table_even_row_bg +
-              " !important;";
-          }
-          if (this._config.colors.table_even_row_text !== null) {
-            style +=
-              "color:" +
-              this._config.colors.table_even_row_text +
-              " !important;";
-          }
-        } else if (this._config.colors.table_text !== null) {
-          style += "color:" + this._config.colors.table_text + " !important;";
+        // Nulls or empties sort after anything else
+        else if (valueA === null || valueA === "") {
+          return 1;
+        } else if (valueB === null || valueB === "") {
+          return -1;
         }
-
-        // Attributes
-        let attrs = [];
-        if (style.length > 0) {
-          attrs["style"] = style;
+        // Sort ascending
+        else {
+          return valueA < valueB ? -1 : 1;
         }
-
-        // Push header cell
-        let cell = table.cell(
-          aircraft.value(key),
-          column.styles ?? null,
-          "td",
-          attrs
-        );
-        cells.push(cell);
       });
 
-      // Attributes of the row
-      let attrs = [];
-      if (this._config.popup) {
-        attrs["data-hex"] = aircraft.hex;
+      if (this.config.order === "desc") {
+        this._aircrafts = this._aircrafts.reverse();
       }
-
-      // Add body row
-      table.row(cells, null, attrs);
-
-      // Update iterator
-      i++;
-
-      // Check for limit
-      if (Number.isInteger(this._config.limit) && this._config.limit === i) {
-        break;
-      }
-    }
-
-    // Set content
-    this.contentDiv.innerHTML = table.getHtml();
-
-    // Add popup if configured
-    if (this._config.popup) {
-      const popup = new Popup(
-        this.contentDiv,
-        this._hass,
-        this._config,
-        this._lang,
-        this._aircrafts
-      );
     }
   }
 }
 
-customElements.define("fr24-card", Fr24Card);
+customElements.define("fr24-card", FR24Card);

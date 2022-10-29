@@ -15,15 +15,12 @@
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.7.1",
-    "css-minimizer-webpack-plugin": "^4.0.0",
     "custom-card-helpers": "^1.8.0",
     "deep-merge-object": "^0.1.1",
     "dotenv": "^16.0.1",
     "less": "^4.1.2",
     "less-loader": "^11.0.0",
-    "mini-css-extract-plugin": "^2.6.0",
     "style-loader": "^3.3.1",
-    "terser-webpack-plugin": "^5.3.1",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2"
   }
