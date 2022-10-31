@@ -14,7 +14,9 @@
       "aircraft_type": "Vrsta"
     },
     "data": {
-      "not_available": "N/A"
+      "not_available": "N/A",
+      "none": "Ni zaznanih letal!",
+      "undefined": "Konfigurirana entiteta ne vsebuje podatkov!"
     }
   },
   "popup": {
