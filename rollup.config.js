@@ -5,6 +5,16 @@ import minifyHTML from "rollup-plugin-minify-html-template-literals";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 
+let plugins = [json(), commonjs(), nodeResolve()];
+
+if (process.env.NODE_ENV === "production") {
+  plugins = plugins.concat([
+    minifyHTML(),
+    terser(),
+    cleanup({ comments: "none" }),
+  ]);
+}
+
 export default {
   input: "src/javascript/fr24_card.js",
   onwarn: function (message, next) {
@@ -15,22 +25,5 @@ export default {
     file: "dist/fr24_card.js",
     format: "cjs",
   },
-  plugins: [
-    minifyHTML({
-      options: {
-        shouldMinify: function () {
-          return false;
-        },
-      },
-    }),
-    json(),
-    commonjs(),
-    nodeResolve(),
-    terser({
-      compress: false,
-      keep_classnames: true,
-      keep_fnames: true,
-    }),
-    cleanup({ comments: "none" }),
-  ],
+  plugins: plugins,
 };
