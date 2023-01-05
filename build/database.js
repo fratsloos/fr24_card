@@ -1,7 +1,8 @@
-require("dotenv").config();
+import * as dotenv from "dotenv";
+import * as path from "path";
+import * as fs from "fs";
 
-const path = require("path");
-const fs = require("fs");
+dotenv.config();
 
 // Create path of files
 const directoryPath = path.join(
@@ -49,7 +50,7 @@ fs.readdir(directoryPath, function (err, files) {
   fs.writeFileSync("./dist/fr24_database.js", data);
 });
 
-readFile = function (file) {
+function readFile(file) {
   console.info("- " + file);
 
   // Read content of file
@@ -72,9 +73,9 @@ readFile = function (file) {
   }
 
   return entries;
-};
+}
 
-readDataFile = function () {
+function readDataFile() {
   let file = "registrations.json";
   console.info("- " + file);
 
@@ -86,4 +87,4 @@ readDataFile = function () {
   console.info("  " + Object.keys(json).length + " entries");
 
   return json;
-};
+}
