@@ -1,7 +1,8 @@
 import { LitElement, html, css } from "lit";
-import { objectMerge } from "deep-merge-object";
+// import { objectMerge } from "deep-merge-object";
 import Aircraft from "./helpers/aircraft.js";
 import availableColumns from "./config/columns.json";
+import Config from "./config/config.js";
 import Distance from "./helpers/distance.js";
 import Lang from "./helpers/lang.js";
 import Path from "./helpers/path.js";
@@ -88,9 +89,9 @@ class FR24Card extends LitElement {
    * Merges the default config with the config from the front-end and checks if
    * the config is valid
    *
-   * @param {Object} config
+   * @param {Object} card
    */
-  setConfig(config) {
+  setConfig(card) {
     // Set path
     const path = new Path();
     this._path = path.getPath();
@@ -107,81 +108,15 @@ class FR24Card extends LitElement {
     // Available columns
     this._availableColumns = availableColumns;
 
-    // Merge config with the default config
-    let defaultConfig = {
-      attribute: "aircraft",
-      columns: [
-        "flag",
-        "registration",
-        "flight",
-        "altitude",
-        "speed",
-        "distance",
-        "track",
-      ],
-      hide: {
-        old_messages: true,
-        empty: [],
-      },
-      lang: null,
-      larger_units: false,
-      limit: null,
-      order: "asc",
-      popup: false,
-      sort: "altitude",
-      track_in_text: false,
-      units: "default",
-      units_in_table: false,
-      zone: null,
-      colors: {
-        table_head_bg: null,
-        table_head_text: null,
+    // Parse card config
+    let config = new Config(card);
 
-        table_units_bg: null,
-        table_units_text: null,
-
-        table_text: null,
-
-        table_even_row_bg: null,
-        table_even_row_text: null,
-
-        popup_bg: null,
-        popup_text: null,
-
-        popup_table_head_bg: null,
-        popup_table_head_text: null,
-
-        popup_table_even_row_bg: null,
-        popup_table_even_row_text: null,
-      },
-    };
-
-    config = objectMerge(defaultConfig, config);
-
-    // Check for entity
-    if (!config.entity) {
-      throw new Error("You need to define and entity");
-    } else if (!["default", "metric"].includes(config.units)) {
-      throw new Error("Unit '" + config.units + "' not supported");
-    } else if (!["asc", "desc"].includes(config.order)) {
-      throw new Error("Order '" + config.order + "' not supported");
-    }
-
-    let totalWeight = 0;
-    config.columns.forEach((column) => {
-      if (!this._availableColumns.hasOwnProperty(column)) {
-        throw new Error("Column '" + column + "' does not exist");
-      }
-
-      totalWeight += this._availableColumns[column].weight;
-    });
-
-    if (totalWeight > 15) {
-      throw new Error("Too many columns defined");
+    if (!config.validate()) {
+      throw new Error(config.error);
     }
 
     // Set config
-    this.config = config;
+    this.config = config.get();
   }
 
   /**
