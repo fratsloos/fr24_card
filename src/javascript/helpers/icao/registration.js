@@ -187,7 +187,6 @@ export default class Registration {
 
   databaseReg = function (hexId) {
     return window.fr24db[hexId] ?? "";
-    // return null;
   };
 
   strideReg = function (hexId) {

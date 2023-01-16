@@ -9,6 +9,7 @@ export default class Config {
     // Default configuration
     this.default = {
       attribute: "aircraft",
+      availableColumns: { ...availableColumns },
       columns: [
         "flag",
         "registration",
@@ -99,11 +100,11 @@ export default class Config {
     } else {
       let totalWeight = 0;
       this.merged.columns.forEach((column) => {
-        if (!availableColumns.hasOwnProperty(column)) {
+        if (!this.merged.availableColumns.hasOwnProperty(column)) {
           throw new Error("Column '" + column + "' does not exist");
         }
 
-        totalWeight += availableColumns[column].weight;
+        totalWeight += this.merged.availableColumns[column].weight;
       });
 
       if (totalWeight > 15) {

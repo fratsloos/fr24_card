@@ -24,6 +24,8 @@ export default class Distance {
     if (typeof zone !== "undefined") {
       this.lat = zone.attributes["latitude"];
       this.lon = zone.attributes["longitude"];
+
+      this.config.distance = true;
     }
   };
 

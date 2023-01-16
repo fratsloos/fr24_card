@@ -1,7 +1,5 @@
 import { LitElement, html, css } from "lit";
-// import { objectMerge } from "deep-merge-object";
 import Aircraft from "./helpers/aircraft.js";
-import availableColumns from "./config/columns.json";
 import Config from "./config/config.js";
 import Distance from "./helpers/distance.js";
 import Lang from "./helpers/lang.js";
@@ -105,9 +103,6 @@ class FR24Card extends LitElement {
       document.head.appendChild(script);
     }
 
-    // Available columns
-    this._availableColumns = availableColumns;
-
     // Parse card config
     let config = new Config(card);
 
@@ -155,9 +150,9 @@ class FR24Card extends LitElement {
     }
 
     // If no distance service, disable the column
-    this._availableColumns.distance.show = true;
-    if (this._distance.isSetUp() === false) {
-      this._availableColumns.distance.show = false;
+    this.config.availableColumns.distance.show = false;
+    if (this.config.distance === true) {
+      this.config.availableColumns.distance.show = true;
     }
 
     // Parse each aircraft
