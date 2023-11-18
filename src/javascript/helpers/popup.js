@@ -161,12 +161,16 @@ export default class Popup {
                               font a{
                                 color:${colorPopupMarkDownLink};
                               }
+                              img {
+                                width:100%
+                              }
                               h2{
                                 display:flex;
                                 justify-content:space-between;
                                 color:${colorPopupMarkDownText};
                               }
                               h2 img{
+                                width: auto;
                                 height:.8em;
                                 margin:0 10px 0 0;
                                 display:inline-block;
