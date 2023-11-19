@@ -141,13 +141,14 @@ class FR24Card extends LitElement {
   _parseAircrafts() {
     const fr24 = this;
     this._aircrafts = [];
-    const states =
-      this.hass.states[this.config.entity].attributes[this.config.attribute];
 
-    if (typeof states === "undefined") {
+    if (typeof this.hass.states[this.config.entity] === "undefined") {
       this._isStateUndefined = true;
       return;
     }
+
+    const states =
+      this.hass.states[this.config.entity].attributes[this.config.attribute];
 
     // If no distance service, disable the column
     this.config.availableColumns.distance.show = false;
