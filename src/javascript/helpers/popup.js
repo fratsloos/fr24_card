@@ -148,6 +148,9 @@ export default class Popup {
                         card_mod: {
                           style: {
                             ".": `
+                              ha-card.type-markdown{
+                                border:none;
+                              }
                               ha-markdown{
                                 background:${colorPopupBackground};
                               }
