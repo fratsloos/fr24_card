@@ -140,7 +140,7 @@ export default class Popup {
                     service: "browser_mod.popup",
                     data: {
                       hide_header: true,
-                      style: `--popup-background-color:${colorPopupBackground};`,
+                      style: `--mdc-theme-surface:${colorPopupBackground};`,
                       title: title,
                       content: {
                         type: "markdown",
