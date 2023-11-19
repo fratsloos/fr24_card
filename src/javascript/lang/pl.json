@@ -1,0 +1,68 @@
+{
+  "table": {
+    "head": {
+      "icao": "Kod ICAO",
+      "country": "Kraj",
+      "registration": "Rejestracja",
+      "flight": "Lot",
+      "squawk": "Squawk",
+      "altitude": "Wysokość",
+      "speed": "Prędkość",
+      "distance": "Dystans",
+      "track": "Kierunek",
+      "age": "Ostatnia wiadomość",
+      "aircraft_type": "Typ"
+    },
+    "data": {
+      "not_available": "N/D",
+      "none": "Brak wykrytych statków powietrznych!",
+      "undefined": "Skonfigurowany obiekt nie zawiera danych!"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Właściwość",
+        "value": "Wartość"
+      }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNE",
+      "ne": "NE",
+      "ene": "ENE",
+      "e": "E",
+      "ese": "ESE",
+      "se": "SE",
+      "sse": "SSE",
+      "s": "S",
+      "ssw": "SSW",
+      "sw": "SW",
+      "wsw": "WSW",
+      "w": "W",
+      "wnw": "WNW",
+      "nw": "NW",
+      "nnw": "NNW"
+    },
+    "long": {
+      "n": "Północ",
+      "nne": "Północ-północny wschód",
+      "ne": "Północny wschód",
+      "ene": "Wschód-północny wschód",
+      "e": "Wschód",
+      "ese": "Wschód-południowy wschód",
+      "se": "Południowy wschód",
+      "sse": "Południowy-południowy wschód",
+      "s": "Południe",
+      "ssw": "Południowy-południowy zachód",
+      "sw": "Południowy zachód",
+      "wsw": "Zachód-południowy zachód",
+      "w": "Zachód",
+      "wnw": "Zachód-północny zachód",
+      "nw": "Północny zachód",
+      "nnw": "Północ-północny zachód"
+    }
+  }
+}
