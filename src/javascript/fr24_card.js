@@ -214,13 +214,14 @@ class Fr24Card extends HTMLElement {
   _parseAircrafts() {
     const fr24 = this;
     this._aircrafts = [];
-    const states =
-      this._hass.states[this._config.entity].attributes[this._config.attribute];
 
-    if (typeof states === "undefined") {
+    if (typeof this._hass.states[this._config.entity] === "undefined") {
       this._isStateUndefined = true;
       return;
     }
+
+    const states =
+      this._hass.states[this._config.entity].attributes[this._config.attribute];
 
     // If no distance service, disable the column
     this._availableColumns.distance.show = true;

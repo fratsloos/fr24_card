@@ -1,6 +1,7 @@
 import de from "../lang/de.json";
 import en from "../lang/en.json";
 import nl from "../lang/nl.json";
+import pl from "../lang/pl.json";
 import sl from "../lang/sl.json";
 
 export default class Lang {
@@ -25,6 +26,9 @@ export default class Lang {
           break;
         case "nl":
           this.content = nl;
+          break;
+        case "pl":
+          this.content = pl;
           break;
         case "sl":
           this.content = sl;

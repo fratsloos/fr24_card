@@ -140,7 +140,7 @@ export default class Popup {
                     service: "browser_mod.popup",
                     data: {
                       hide_header: true,
-                      style: `--popup-background-color:${colorPopupBackground};`,
+                      style: `--mdc-theme-surface:${colorPopupBackground};`,
                       title: title,
                       content: {
                         type: "markdown",
@@ -148,6 +148,9 @@ export default class Popup {
                         card_mod: {
                           style: {
                             ".": `
+                              ha-card.type-markdown{
+                                border:none;
+                              }
                               ha-markdown{
                                 background:${colorPopupBackground};
                               }
@@ -161,12 +164,16 @@ export default class Popup {
                               font a{
                                 color:${colorPopupMarkDownLink};
                               }
+                              img {
+                                width:100%
+                              }
                               h2{
                                 display:flex;
                                 justify-content:space-between;
                                 color:${colorPopupMarkDownText};
                               }
                               h2 img{
+                                width: auto;
                                 height:.8em;
                                 margin:0 10px 0 0;
                                 display:inline-block;
