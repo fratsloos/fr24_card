@@ -19,6 +19,8 @@ export default class Config {
         "distance",
         "track",
       ],
+      dbl_click_speed: 250,
+      default_provider: "flight_radar_24",
       hide: {
         old_messages: true,
         empty: [],
@@ -28,6 +30,13 @@ export default class Config {
       limit: null,
       order: "asc",
       popup: false,
+      providers: {
+        adsbexchange: true,
+        flight_aware: true,
+        flight_radar_24: true,
+        opensky_network: true,
+        planefinder: true,
+      },
       sort: "altitude",
       track_in_text: false,
       units: "default",
