@@ -1,0 +1,68 @@
+{
+  "table": {
+    "head": {
+      "icao": "ICAO-tunnus",
+      "country": "Maa",
+      "registration": "Rekisteröinti",
+      "flight": "Lento",
+      "squawk": "Tunniste",
+      "altitude": "Korkeus",
+      "speed": "Nopeus",
+      "distance": "Etäisyys",
+      "track": "Lentorata",
+      "age": "Viimeisin viesti",
+      "aircraft_type": "Tyyppi"
+    },
+    "data": {
+      "not_available": "Ei saatavilla",
+      "none": "Ei havaittuja lentoaluksia!",
+      "undefined": "Määritys ei sisällä dataa!"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Kenttä",
+        "value": "Arvo"
+      }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNE",
+      "ne": "NE",
+      "ene": "ENE",
+      "e": "E",
+      "ese": "ESE",
+      "se": "SE",
+      "sse": "SSE",
+      "s": "S",
+      "ssw": "SSW",
+      "sw": "SW",
+      "wsw": "WSW",
+      "w": "W",
+      "wnw": "WNW",
+      "nw": "NW",
+      "nnw": "NNW"
+    },
+    "long": {
+      "n": "Pohjoinen",
+      "nne": "Pohjoiskoillinen",
+      "ne": "Koillinen",
+      "ene": "Itäkoillinen",
+      "e": "Itä",
+      "ese": "Itäkaakko",
+      "se": "Kaakko",
+      "sse": "Eteläkaakko",
+      "s": "Etelä",
+      "ssw": "Etelälounas",
+      "sw": "Lounas",
+      "wsw": "Länsilounas",
+      "w": "Länsi",
+      "wnw": "Länsiluode",
+      "nw": "Luode",
+      "nnw": "Pohjoisluode"
+    }
+  }
+}
