@@ -1,5 +1,6 @@
 import de from "../lang/de.json";
 import en from "../lang/en.json";
+import fi from "../lang/fi.json";
 import nl from "../lang/nl.json";
 import pl from "../lang/pl.json";
 import sl from "../lang/sl.json";
@@ -23,6 +24,9 @@ export default class Lang {
       switch (this.config.lang) {
         case "de":
           this.content = de;
+          break;
+        case "fi":
+          this.content = fi;
           break;
         case "nl":
           this.content = nl;
