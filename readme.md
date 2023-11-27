@@ -162,18 +162,18 @@ The icon of an aircraft is based on the value of two elements in the aircraft da
 2. `altitude` -
    The altitude of the aircraft is used for the color of the icon. When an aircraft is within the range the color is calculated as difference between the colors. This way an aircraft flying at 9000 ft has a slightly different color than an aircraft at 9500 ft.
 
-| Altitude range in ft (min - max) | Color                 |
-| :------------------------------- | :-------------------- |
-| < 1000                           | `#EC5B13`             |
-| 1000 - 2000                      | `#EC5B13` - `#EC7C13` |
-| 2000 - 4000                      | `#EC7C13` - `#ECC813` |
-| 4000 - 6000                      | `#ECC813` - `#BEDF13` |
-| 6000 - 8000                      | `#BEDF13` - `#40EC44` |
-| 8000 - 10000                     | `#40EC44` - `#11E276` |
-| 10000 - 20000                    | `#11E276` - `#13BBDE` |
-| 20000 - 30000                    | `#13BBDE` - `#241FEC` |
-| 30000 - 40000                    | `#241FEC` - `#EB13EC` |
-| > 40000                          | `#EB13EC`             |
+| Altitude range in ft (min - max) | Color                                                                           |
+| :------------------------------- | :------------------------------------------------------------------------------ |
+| < 1000                           | `#EC5B13` ![#EC5B13][img_color_EC5B13]                                          |
+| 1000 - 2000                      | `#EC5B13` ![#EC5B13][img_color_EC5B13] - `#EC7C13` ![#EC7C13][img_color_EC7C13] |
+| 2000 - 4000                      | `#EC7C13` ![#EC7C13][img_color_EC7C13] - `#ECC813` ![#ECC813][img_color_ECC813] |
+| 4000 - 6000                      | `#ECC813` ![#ECC813][img_color_ECC813] - `#BEDF13` ![#BEDF13][img_color_BEDF13] |
+| 6000 - 8000                      | `#BEDF13` ![#BEDF13][img_color_BEDF13] - `#40EC44` ![#40EC44][img_color_40EC44] |
+| 8000 - 10000                     | `#40EC44` ![#40EC44][img_color_40EC44] - `#11E276` ![#11E276][img_color_11E276] |
+| 10000 - 20000                    | `#11E276` ![#11E276][img_color_11E276] - `#13BBDE` ![#13BBDE][img_color_13BBDE] |
+| 20000 - 30000                    | `#13BBDE` ![#13BBDE][img_color_13BBDE] - `#241FEC` ![#241FEC][img_color_241FEC] |
+| 30000 - 40000                    | `#241FEC` ![#241FEC][img_color_241FEC] - `#EB13EC` ![#EB13EC][img_color_EB13EC] |
+| > 40000                          | `#EB13EC` ![#EB13EC][img_color_EB13EC]                                          |
 
 ![Example of the icons][img_icons]
 
@@ -262,3 +262,13 @@ Honor where credit is due. This card could not have been made without consulting
 [img_screenshot]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/fr24card.png?raw=true "Screenshot of FR24 card in action"
 [img_units]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/units.png?raw=true "Units in the table header"
 [img_icons]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/icons.png?raw=true "Different colored icons"
+[img_color_EC5B13]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/EC5B13.png?raw=true "Example of color #EC5B13"
+[img_color_EC5B13]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/EC5B13.png?raw=true "Example of color #EC5B13"
+[img_color_EC7C13]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/EC7C13.png?raw=true "Example of color #EC7C13"
+[img_color_ECC813]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/ECC813.png?raw=true "Example of color #ECC813"
+[img_color_BEDF13]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/BEDF13.png?raw=true "Example of color #BEDF13"
+[img_color_40EC44]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/40EC44.png?raw=true "Example of color #40EC44"
+[img_color_11E276]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/11E276.png?raw=true "Example of color #11E276"
+[img_color_13BBDE]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/13BBDE.png?raw=true "Example of color #13BBDE"
+[img_color_241FEC]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/241FEC.png?raw=true "Example of color #241FEC"
+[img_color_EB13EC]: https://raw.githubusercontent.com/fratsloos/fr24_card/master/readme/images/color/EB13EC.png?raw=true "Example of color #EB13EC"
