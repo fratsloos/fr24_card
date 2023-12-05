@@ -20,7 +20,7 @@ export default class Config {
         "track",
       ],
       dbl_click_speed: 250,
-      default_provider: "flight_radar_24",
+      default_provider: "flightradar24",
       hide: {
         old_messages: true,
         empty: [],
@@ -33,10 +33,10 @@ export default class Config {
       popup: false,
       providers: {
         adsbexchange: false,
-        flight_aware: false,
-        flight_radar_24: false,
+        flightaware: false,
+        flightradar24: false,
         opensky_network: false,
-        planefinder: false,
+        plane_finder: false,
       },
       sort: "altitude",
       track_in_text: false,

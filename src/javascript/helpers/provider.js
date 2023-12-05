@@ -22,16 +22,16 @@ export default class Provider {
       case "adsbexchange":
         url = this.urlAdbsExchange;
         break;
-      case "flight_aware":
+      case "flightaware":
         url = this.urlFlightAware;
         break;
-      case "flight_radar_24":
+      case "flightradar24":
         url = this.urlFlightRadar24;
         break;
       case "opensky_network":
         url = this.urlOpenskyNetwork;
         break;
-      case "planefinder":
+      case "plane_finder":
         url = this.urlPlaneFinder;
         break;
     }

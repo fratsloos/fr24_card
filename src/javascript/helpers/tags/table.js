@@ -218,7 +218,7 @@ export class Table extends LitElement {
       clearTimeout(this.clickService.timer);
       this.clickService.timer = undefined;
 
-      if (this.config.provider) {
+      if (this.config.default_provider) {
         this._handleDoubleClick();
       }
     } else {
