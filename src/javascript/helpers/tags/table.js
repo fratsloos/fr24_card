@@ -265,8 +265,6 @@ export class Table extends LitElement {
 
       let provider = new Provider(this.config, this.hass);
 
-      console.log("url", provider.getUrl(aircraft));
-
       handleClick(row, this.hass, {
         tap_action: {
           action: "url",

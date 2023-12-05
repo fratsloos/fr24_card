@@ -1,4 +1,5 @@
 import availableColumns from "../config/columns.json";
+import Provider from "./provider.js";
 import { handleClick } from "custom-card-helpers";
 
 export default class Popup {
@@ -57,7 +58,7 @@ export default class Popup {
         if (popup.aircraft.flag) {
           content += `<img src="${popup.aircraft.flag}" height="15" />`;
         }
-        content += `${subtitle}</span><span>${popup.aircraft.value(
+        content += `${title} - ${subtitle}</span><span>${popup.aircraft.value(
           "icon",
           true
         )}</span>\n`;
@@ -74,6 +75,17 @@ export default class Popup {
             content += `|${popup.lang.table.head[key]}|${value}|\n`;
           }
         });
+
+        content += "\n";
+
+        let provider = new Provider(popup.config, popup.hass);
+        for (const property in popup.config.providers) {
+          if (popup.config.providers[property]) {
+            content += `* [![${property}](${provider.getImage(
+              property
+            )} "${property}")](${provider.getUrl(popup.aircraft, property)})\n`;
+          }
+        }
 
         // Colors
         const colorPopupBackground =
@@ -116,14 +128,13 @@ export default class Popup {
               data: {
                 hide_header: true,
                 style: `--mdc-theme-surface:${colorPopupBackground};`,
-                title: title,
                 content: {
                   type: "markdown",
                   content: content,
                   card_mod: {
                     style: {
                       ".": `ha-card.type-markdown{border:none;}ha-markdown{background:${colorPopupBackground};}ha-markdown a{color:${colorPopupMarkDownLink}};ha-markdown.no-header{padding-top:0 !important;}`,
-                      "ha-markdown$": `img{width:100%}img + span{color:${colorPopupMarkDownText};font-size:10px;}img + span a{color:${colorPopupMarkDownText}}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{width:auto;height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}`,
+                      "ha-markdown$": `img{width:100%}img + span{color:${colorPopupMarkDownText};font-size:10px;}img + span a{color:${colorPopupMarkDownText}}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{width:auto;height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}ul{list-style-type:none;padding:0;display:flex;justify-content:space-between;}ul li{display:inline-block;}ul li img{height:24px;width:auto;}`,
                     },
                   },
                 },
