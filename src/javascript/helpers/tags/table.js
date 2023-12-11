@@ -3,6 +3,8 @@ import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import availableColumns from "../../config/columns.json";
 import Popup from "../popup.js";
+import Provider from "../provider.js";
+import { handleClick } from "custom-card-helpers";
 
 export class Table extends LitElement {
   static get properties() {
@@ -16,6 +18,11 @@ export class Table extends LitElement {
 
   constructor() {
     super();
+
+    this.clickService = {
+      timer: undefined,
+      target: undefined,
+    };
   }
 
   render() {
@@ -205,26 +212,65 @@ export class Table extends LitElement {
   }
 
   _handleClick(event) {
-    if (this.config.popup) {
-      let row = event.target.closest("tr");
-      if (row) {
-        // Get hex of clicked row
-        let hex = row.getAttribute("data-hex");
+    this.clickService.target = event.target.closest("tr");
 
-        // Search for the correct aircraft
-        let aircraft = null;
-        for (let i = 0; i < this.aircrafts.length; i++) {
-          if (this.aircrafts[i].hex === hex) {
-            aircraft = this.aircrafts[i];
-            break;
-          }
-        }
+    if (this.clickService.timer) {
+      clearTimeout(this.clickService.timer);
+      this.clickService.timer = undefined;
 
-        // Show popup if aircraft is found
-        if (aircraft !== null) {
-          new Popup(this.hass, this.config, this.lang, row, aircraft);
-        }
+      if (this.config.default_provider) {
+        this._handleDoubleClick();
       }
+    } else {
+      this.clickService.timer = setTimeout(() => {
+        this.clickService.timer = undefined;
+
+        if (this.config.popup) {
+          this._handleSingleClick();
+        }
+      }, this.config.dbl_click_speed);
+    }
+  }
+
+  _handleSingleClick(event) {
+    let row = this.clickService.target;
+
+    if (row) {
+      // Get hex of clicked row
+      let hex = row.getAttribute("data-hex");
+
+      // Search for the correct aircraft
+      let aircraft = this.aircrafts.find((aircraft) => {
+        return aircraft.hex === hex;
+      });
+
+      // Show popup if aircraft is found
+      if (aircraft !== null) {
+        new Popup(this.hass, this.config, this.lang, row, aircraft);
+      }
+    }
+  }
+
+  _handleDoubleClick(event) {
+    let row = this.clickService.target;
+
+    if (row) {
+      // Get hex of clicked row
+      let hex = row.getAttribute("data-hex");
+
+      // Search for the correct aircraft
+      let aircraft = this.aircrafts.find((aircraft) => {
+        return aircraft.hex === hex;
+      });
+
+      let provider = new Provider(this.config, this.hass);
+
+      handleClick(row, this.hass, {
+        tap_action: {
+          action: "url",
+          url_path: provider.getUrl(aircraft),
+        },
+      });
     }
   }
 
