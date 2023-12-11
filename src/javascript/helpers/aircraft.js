@@ -124,9 +124,8 @@ export default class Aircraft {
 
     switch (key) {
       case "icon":
-        return inPopup
-          ? `<ha-icon icon="${aircraft.icon}"></ha-icon>`
-          : `<font color="#${aircraft.hex}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
+        let color = this.altitudeAsColor(aircraft.altitude);
+        return `<font color="${color}"><ha-icon icon="${aircraft.icon}"></ha-icon></font>`;
 
       case "flag":
         if (aircraft.flag !== null) {
@@ -234,6 +233,69 @@ export default class Aircraft {
 
         return value;
     }
+  };
+
+  altitudeAsColor = function (altitude) {
+    let color_min = "EC5B13";
+    let color_max = "EC5B13";
+    let ratio = 0.5;
+
+    if (altitude > 1000 && altitude <= 2000) {
+      color_max = "EC7C13";
+      ratio = (1 / (2000 - 1000)) * (altitude - 1000);
+    } else if (altitude > 2000 && altitude <= 4000) {
+      color_min = "EC7C13";
+      color_max = "ECC813";
+      ratio = (1 / (4000 - 2000)) * (altitude - 2000);
+    } else if (altitude > 4000 && altitude <= 6000) {
+      color_min = "ECC813";
+      color_max = "BEDF13";
+      ratio = (1 / (6000 - 4000)) * (altitude - 4000);
+    } else if (altitude > 6000 && altitude <= 8000) {
+      color_min = "BEDF13";
+      color_max = "40EC44";
+      ratio = (1 / (8000 - 6000)) * (altitude - 6000);
+    } else if (altitude > 8000 && altitude <= 10000) {
+      color_min = "40EC44";
+      color_max = "11E276";
+      ratio = (1 / (10000 - 8000)) * (altitude - 8000);
+    } else if (altitude > 10000 && altitude <= 20000) {
+      color_min = "11E276";
+      color_max = "13BBDE";
+      ratio = (1 / (20000 - 10000)) * (altitude - 10000);
+    } else if (altitude > 20000 && altitude <= 30000) {
+      color_min = "13BBDE";
+      color_max = "241FEC";
+      ratio = (1 / (30000 - 20000)) * (altitude - 20000);
+    } else if (altitude > 30000 && altitude <= 40000) {
+      color_min = "241FEC";
+      color_max = "EB13EC";
+      ratio = (1 / (40000 - 30000)) * (altitude - 30000);
+    } else if (altitude > 40000) {
+      color_min = "EB13EC";
+      color_max = "EB13EC";
+    }
+
+    if (color_min === color_max) {
+      return color_min;
+    }
+
+    color_min = color_min
+      .match(/.{1,2}/g)
+      .map((oct) => parseInt(oct, 16) * (1 - ratio));
+    color_max = color_max
+      .match(/.{1,2}/g)
+      .map((oct) => parseInt(oct, 16) * ratio);
+    let ci = [0, 1, 2].map((i) =>
+      Math.min(Math.round(color_min[i] + color_max[i]), 255)
+    );
+
+    let color = ci
+      .reduce((a, v) => (a << 8) + v, 0)
+      .toString(16)
+      .padStart(6, "0");
+
+    return "#" + color;
   };
 
   /**

@@ -48,8 +48,8 @@ export default class Popup {
           let photographer = json.photos[0].photographer;
 
           // Add photo to content
-          content += `![${title} - &copy; ${photographer}](${image} "${title} - &copy; ${photographer}")\n`;
-          content += `<font size="1">&copy; [${photographer}](${link})</font>\n\n`;
+          content += `![${title} - &copy; ${photographer}](${image} "${title} - &copy; ${photographer}")`;
+          content += `<span>&copy; [${photographer}](${link})</span>\n\n`;
         }
 
         // Add flag, title and icon to content
@@ -122,8 +122,8 @@ export default class Popup {
                   content: content,
                   card_mod: {
                     style: {
-                      ".": `ha-card.type-markdown{border:none;}ha-markdown{background:${colorPopupBackground};}ha-markdown.no-header{padding-top:0 !important;}`,
-                      "ha-markdown$": `font {color: ${colorPopupMarkDownText};}font a{color:${colorPopupMarkDownLink};}img{width:100%}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{width:auto;height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}`,
+                      ".": `ha-card.type-markdown{border:none;}ha-markdown{background:${colorPopupBackground};}ha-markdown a{color:${colorPopupMarkDownLink}};ha-markdown.no-header{padding-top:0 !important;}`,
+                      "ha-markdown$": `img{width:100%}img + span{color:${colorPopupMarkDownText};font-size:10px;}img + span a{color:${colorPopupMarkDownText}}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{width:auto;height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}`,
                     },
                   },
                 },
