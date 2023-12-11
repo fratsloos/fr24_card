@@ -164,21 +164,36 @@ class FR24Card extends LitElement {
         this._distance,
         this._lang
       );
-      let addToAircrafts = true;
 
+      let add = true;
+
+      // Check on old messages
       if (this.config.hide.old_messages !== false && aircraft.seen > 30) {
-        addToAircrafts = false;
-      } else if (this.config.hide.empty.length > 0) {
+        add = false;
+      }
+
+      // Check on ground vehicles
+      if (
+        this.config.hide.ground_vehicles !== false &&
+        aircraft.altitude === "ground"
+      ) {
+        add = false;
+      }
+
+      // Check on empty values for defined columns
+      if (this.config.hide.empty.length > 0) {
         for (let i = 0; i < this.config.hide.empty.length; i++) {
           let column = this.config.hide.empty[i];
+
           if (aircraft[column] === null || aircraft[column] === "") {
-            addToAircrafts = false;
+            add = false;
             break;
           }
         }
       }
 
-      if (addToAircrafts) {
+      // Add aircraft
+      if (add) {
         this._aircrafts.push(aircraft);
       }
     });
