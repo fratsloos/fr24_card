@@ -157,31 +157,47 @@ class FR24Card extends LitElement {
     }
 
     // Parse each aircraft
-    states.forEach((state) => {
+    for (let i = 0; i < states.length; i++) {
       let aircraft = new Aircraft(
-        state,
+        states[i],
         this.config,
         this._distance,
         this._lang
       );
-      let addToAircrafts = true;
 
+      // Check on old messages
       if (this.config.hide.old_messages !== false && aircraft.seen > 30) {
-        addToAircrafts = false;
-      } else if (this.config.hide.empty.length > 0) {
+        break;
+      }
+
+      // Check on ground vehicles
+      if (
+        this.config.hide.ground_vehicles !== false &&
+        aircraft.altitude === "ground"
+      ) {
+        break;
+      }
+
+      // Check on empty values for defined columns
+      if (this.config.hide.empty.length > 0) {
+        let add = true;
         for (let i = 0; i < this.config.hide.empty.length; i++) {
           let column = this.config.hide.empty[i];
+
           if (aircraft[column] === null || aircraft[column] === "") {
-            addToAircrafts = false;
+            add = false;
             break;
           }
         }
+
+        if (!add) {
+          break;
+        }
       }
 
-      if (addToAircrafts) {
-        this._aircrafts.push(aircraft);
-      }
-    });
+      // Add aircraft
+      this._aircrafts.push(aircraft);
+    }
 
     if (this._aircrafts.length > 1) {
       // Sort aircrafts

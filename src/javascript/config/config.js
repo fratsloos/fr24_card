@@ -24,6 +24,7 @@ export default class Config {
       hide: {
         old_messages: true,
         empty: [],
+        ground_vehicles: false,
       },
       inverted_logo: false,
       lang: null,
