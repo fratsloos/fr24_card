@@ -157,17 +157,19 @@ class FR24Card extends LitElement {
     }
 
     // Parse each aircraft
-    for (let i = 0; i < states.length; i++) {
+    states.forEach((state) => {
       let aircraft = new Aircraft(
-        states[i],
+        state,
         this.config,
         this._distance,
         this._lang
       );
 
+      let add = true;
+
       // Check on old messages
       if (this.config.hide.old_messages !== false && aircraft.seen > 30) {
-        break;
+        add = false;
       }
 
       // Check on ground vehicles
@@ -175,12 +177,11 @@ class FR24Card extends LitElement {
         this.config.hide.ground_vehicles !== false &&
         aircraft.altitude === "ground"
       ) {
-        break;
+        add = false;
       }
 
       // Check on empty values for defined columns
       if (this.config.hide.empty.length > 0) {
-        let add = true;
         for (let i = 0; i < this.config.hide.empty.length; i++) {
           let column = this.config.hide.empty[i];
 
@@ -189,15 +190,13 @@ class FR24Card extends LitElement {
             break;
           }
         }
-
-        if (!add) {
-          break;
-        }
       }
 
       // Add aircraft
-      this._aircrafts.push(aircraft);
-    }
+      if (add) {
+        this._aircrafts.push(aircraft);
+      }
+    });
 
     if (this._aircrafts.length > 1) {
       // Sort aircrafts
