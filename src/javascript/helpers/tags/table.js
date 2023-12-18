@@ -214,6 +214,11 @@ export class Table extends LitElement {
   _handleClick(event) {
     this.clickService.target = event.target.closest("tr");
 
+    if (this.config.default_provider === false && this.config.popup === true) {
+      // No single or double click
+      return this._handleSingleClick();
+    }
+
     if (this.clickService.timer) {
       clearTimeout(this.clickService.timer);
       this.clickService.timer = undefined;
