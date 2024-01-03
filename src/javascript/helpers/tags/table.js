@@ -99,7 +99,7 @@ export class Table extends LitElement {
 
       // Attributes of the row
       let attrs = {};
-      if (this.config.popup) {
+      if (this.config.popup.enabled) {
         attrs.hex = aircraft.hex;
       }
 
@@ -214,7 +214,10 @@ export class Table extends LitElement {
   _handleClick(event) {
     this.clickService.target = event.target.closest("tr");
 
-    if (this.config.default_provider === false && this.config.popup === true) {
+    if (
+      this.config.default_provider === false &&
+      this.config.popup.enabled === true
+    ) {
       // No single or double click
       return this._handleSingleClick();
     }
@@ -230,7 +233,7 @@ export class Table extends LitElement {
       this.clickService.timer = setTimeout(() => {
         this.clickService.timer = undefined;
 
-        if (this.config.popup) {
+        if (this.config.popup.enabled) {
           this._handleSingleClick();
         }
       }, this.config.dbl_click_speed);

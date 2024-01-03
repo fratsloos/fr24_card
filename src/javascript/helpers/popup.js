@@ -119,26 +119,33 @@ export default class Popup {
           popup.config.colors.table_even_row_text ??
           "var(--primary-text-color)";
 
+        // Data for the popup
+        let browserModData = {
+          hide_header: popup.config.popup.header === false,
+          style: `--mdc-theme-surface:${colorPopupBackground};`,
+          content: {
+            type: "markdown",
+            content: content,
+            card_mod: {
+              style: {
+                ".": `ha-card.type-markdown{border:none;}ha-markdown{background:${colorPopupBackground};}ha-markdown a{color:${colorPopupMarkDownLink}};ha-markdown.no-header{padding-top:0 !important;}`,
+                "ha-markdown$": `img{width:100%}img + span{color:${colorPopupMarkDownText};font-size:10px;}img + span a{color:${colorPopupMarkDownText}}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{width:auto;height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}ul{list-style-type:none;padding:0;display:flex;justify-content:space-between;}ul li{display:inline-block;}ul li img{height:24px;width:auto;}`,
+              },
+            },
+          },
+        };
+
+        if (popup.config.popup.header === true) {
+          browserModData.title = title;
+        }
+
         // Open popup using browser_mod
         handleClick(popup.row, popup.hass, {
           tap_action: {
             action: "fire-dom-event",
             browser_mod: {
               service: "browser_mod.popup",
-              data: {
-                hide_header: true,
-                style: `--mdc-theme-surface:${colorPopupBackground};`,
-                content: {
-                  type: "markdown",
-                  content: content,
-                  card_mod: {
-                    style: {
-                      ".": `ha-card.type-markdown{border:none;}ha-markdown{background:${colorPopupBackground};}ha-markdown a{color:${colorPopupMarkDownLink}};ha-markdown.no-header{padding-top:0 !important;}`,
-                      "ha-markdown$": `img{width:100%}img + span{color:${colorPopupMarkDownText};font-size:10px;}img + span a{color:${colorPopupMarkDownText}}h2{display:flex;justify-content:space-between;color:${colorPopupMarkDownText};}h2 img{width:auto;height:.8em;margin:0 10px 0 0;display:inline-block;vertical-align:baseline;}table{width:100%;border-spacing:0;border-collapse:collapse;}table tr th, table tr td{padding:4px;}table tr th{background-color:${colorPopupTableHeadBackground};color:${colorPopupTableHeadText};}table tr{color:${colorPopupTableRowText};}table tr:nth-child(even){background-color:${colorPopupTableRowEvenBackground};color:${colorPopupTableRowEvenText};}ul{list-style-type:none;padding:0;display:flex;justify-content:space-between;}ul li{display:inline-block;}ul li img{height:24px;width:auto;}`,
-                    },
-                  },
-                },
-              },
+              data: browserModData,
             },
           },
         });

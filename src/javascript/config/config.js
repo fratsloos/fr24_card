@@ -31,7 +31,10 @@ export default class Config {
       larger_units: false,
       limit: null,
       order: "asc",
-      popup: false,
+      popup: {
+        enabled: false,
+        header: false,
+      },
       providers: {
         adsbexchange: false,
         flightaware: false,
@@ -104,6 +107,8 @@ export default class Config {
     // Check for entity, unit, order
     if (!this.merged.entity) {
       this.error = "You need to define and entity";
+    } else if (typeof this.merged.popup !== "object") {
+      this.error = "Config of popup should be an object";
     } else if (!["default", "metric"].includes(this.merged.units)) {
       this.error = "Unit '" + this.merged.units + "' is not supported";
     } else if (!["asc", "desc"].includes(this.merged.order)) {
