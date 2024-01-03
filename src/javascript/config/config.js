@@ -34,6 +34,7 @@ export default class Config {
       popup: {
         enabled: false,
         header: false,
+        photo: true,
       },
       providers: {
         adsbexchange: false,
