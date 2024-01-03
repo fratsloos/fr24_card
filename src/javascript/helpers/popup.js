@@ -99,9 +99,13 @@ export default class Popup {
     let provider = new Provider(this.config, this.hass);
     for (const property in this.config.providers) {
       if (this.config.providers[property]) {
-        content += `* [![${property}](${provider.getImage(
-          property
-        )} "${property}")](${provider.getUrl(this.aircraft, property)})\n`;
+        let url = provider.getUrl(this.aircraft, property);
+
+        if (url !== null) {
+          content += `* [![${property}](${provider.getImage(
+            property
+          )} "${property}")](${url})\n`;
+        }
       }
     }
 

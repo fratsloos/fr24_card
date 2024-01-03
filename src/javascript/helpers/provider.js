@@ -37,6 +37,15 @@ export default class Provider {
     }
 
     if (url !== null) {
+      if (
+        (url.includes("%hex%") && aircraft.hex === null) ||
+        (url.includes("%flight%") && aircraft.flight === null)
+      ) {
+        // Not all required data available
+        return null;
+      }
+
+      // Update URL
       url = url
         .replace("%hex%", aircraft.hex)
         .replace("%flight%", aircraft.flight);

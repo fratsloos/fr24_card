@@ -124,35 +124,23 @@ export class Table extends LitElement {
           --fr24-table-head-bg: ${this.config.colors.table_head_bg !== null
             ? this.config.colors.table_head_bg
             : "var(--primary-color)"};
-        }
-        :host {
           --fr24-table-head-text: ${this.config.colors.table_head_text !== null
             ? this.config.colors.table_head_text
             : "var(--app-header-text-color)"};
-        }
-        :host {
           --fr24-table-units-bg: ${this.config.colors.table_units_bg !== null
             ? this.config.colors.table_units_bg
             : "var(--secondary-background-color)"};
-        }
-        :host {
           --fr24-table-units-text: ${this.config.colors.table_units_text !==
           null
             ? this.config.colors.table_units_text
             : "var(--primary-text-color)"};
-        }
-        :host {
           --fr24-table-text: ${this.config.colors.table_text !== null
             ? this.config.colors.table_text
             : "var(--primary-text-color)"};
-        }
-        :host {
           --fr24-table-even-row-bg: ${this.config.colors.table_even_row_bg !==
           null
             ? this.config.colors.table_even_row_bg
             : "var(--primary-background-color)"};
-        }
-        :host {
           --fr24-table-even-row-text: ${this.config.colors
             .table_even_row_text !== null
             ? this.config.colors.table_even_row_text
@@ -272,13 +260,16 @@ export class Table extends LitElement {
       });
 
       let provider = new Provider(this.config, this.hass);
+      let url = provider.getUrl(aircraft);
 
-      handleClick(row, this.hass, {
-        tap_action: {
-          action: "url",
-          url_path: provider.getUrl(aircraft),
-        },
-      });
+      if (url !== null) {
+        handleClick(row, this.hass, {
+          tap_action: {
+            action: "url",
+            url_path: url,
+          },
+        });
+      }
     }
   }
 
