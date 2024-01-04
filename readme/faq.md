@@ -26,11 +26,11 @@ An exception on this is when you use the configuration option `limit`. With this
 
 ## The popup doesn't work?
 
-The popup is based on the functionalities of [browser_mod](https://github.com/thomasloven/hass-browser_mod). Install browser_mod and try again.
+The popup is based on the functionalities of [browser_mod][browser_mod]. Install browser_mod and try again.
 
 ## The styling of the popup looks strange?
 
-The popup styling is added using [card-mod](https://github.com/thomasloven/lovelace-card-mod). Install card-mod and try again.
+The popup styling is added using [card-mod][card_mod]. Install card-mod and try again.
 
 ## If I have the popup open and the sensor is refreshed, does the data in the popup not change?
 
@@ -49,3 +49,7 @@ The distance is calculated between the coordinates of your configured zone and t
 The hex (ICAO) code of the data is matched against the data in [`fr24_database.js`](../dist/fr24_database.js). This is a large file that is side loaded when the card is loaded for the first time (in every browser session). This might cause the first render of the card to don't have the registration data. The data will be loaded next time the card is rendered (which happens when the sensor is updated).
 
 You could try to add the database to your dashboard as Javascript module to fix this issue.
+
+<!-- Documentation links -->
+[browser_mod]: https://github.com/thomasloven/hass-browser_mod
+[card_mod]: https://github.com/thomasloven/lovelace-card-mod

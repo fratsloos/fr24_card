@@ -1,8 +1,8 @@
-# Installation
+# Manual installation
 
-It is recommended to use HACS to install this card. If you want to install the card manually, follow the next steps:
+It is recommended to use [HACS][hacs] to install this card. If you want to install the card manually, follow the next steps:
 
-1. [Download](https://github.com/fratsloos/fr24_card/archive/refs/heads/master.zip) the master branch source as ZIP;
+1. [Download][download] the master branch source as ZIP;
 2. Extract the ZIP on your local computer;
 3. Copy the contents of the dist folder to your Home Assistant installation. Copy the files to the `config/www/fr24card/` folder;
    - Copy all files, including the images folder!
@@ -15,3 +15,7 @@ It is recommended to use HACS to install this card. If you want to install the c
    6. Select 'Javascript Module';
    7. Click 'CREATE'.
 5. Home Assistant is known for its aggresive caching, so make sure to reload the cache of your browser.
+
+<!-- Documentation links -->
+[download]: https://github.com/fratsloos/fr24_card/archive/refs/heads/master.zip
+[hacs]: https://hacs.xyz
