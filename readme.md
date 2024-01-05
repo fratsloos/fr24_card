@@ -6,7 +6,7 @@ A custom card for Home Assistant to list the aircraft found in the [Dump1090][du
 
 This card is developed and tested based on the output of `data/aircraft.json` of the [FlightRadar24 Pi24 image][flight_radar].
 
-The FR24 card has many configuration options and supports multiple languages.
+The FR24 card has many [configuration](readme/configuration.md) options and supports multiple languages.
 
 
 **Did my project help you? Then you can always thank me with a coffee!**
@@ -15,7 +15,7 @@ The FR24 card has many configuration options and supports multiple languages.
 
 # Preparation
 
-To use the card you need to create a sensor that reads the JSON from Dump1090. Add the following configuration to your `sensors.yaml`:
+To use the card you need to create a sensor that reads the JSON from Dump1090. Add the following [configuration](readme/configuration.md) to your `sensors.yaml`:
 
 ```yaml
 - platform: rest
