@@ -1,0 +1,68 @@
+{
+  "table": {
+    "head": {
+      "icao": "ICAO 代碼",
+      "country": "國家",
+      "registration": "註冊編號",
+      "flight": "航班",
+      "squawk": "應答代碼",
+      "altitude": "高度",
+      "speed": "速度",
+      "distance": "距離",
+      "track": "方位",
+      "age": "最後一則資料",
+      "aircraft_type": "類型"
+    },
+    "data": {
+      "not_available": "無",
+      "none": "未發現飛機",
+      "undefined": "設定的實體未包含資料"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "屬性",
+        "value": "值"
+      }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNE",
+      "ne": "NE",
+      "ene": "ENE",
+      "e": "E",
+      "ese": "ESE",
+      "se": "SE",
+      "sse": "SSE",
+      "s": "S",
+      "ssw": "SSW",
+      "sw": "SW",
+      "wsw": "WSW",
+      "w": "W",
+      "wnw": "WNW",
+      "nw": "NW",
+      "nnw": "NNW"
+    },
+    "long": {
+      "n": "北",
+      "nne": "東北偏北",
+      "ne": "東北",
+      "ene": "東北偏東",
+      "e": "東",
+      "ese": "東南偏東",
+      "se": "東南",
+      "sse": "東南偏南",
+      "s": "南",
+      "ssw": "西南偏南",
+      "sw": "西南",
+      "wsw": "西南偏西",
+      "w": "西",
+      "wnw": "西北偏西",
+      "nw": "西北",
+      "nnw": "西北偏北"
+    }
+  }
+}
