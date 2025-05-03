@@ -1,0 +1,68 @@
+{
+  "table": {
+    "head": {
+      "icao": "Code ICAO",
+      "country": "Pays",
+      "registration": "Immatriculation",
+      "flight": "Vol",
+      "squawk": "Transpondeur",
+      "altitude": "Altitude",
+      "speed": "Vitesse",
+      "distance": "Distance",
+      "track": "Route",
+      "age": "Dernier message",
+      "aircraft_type": "Type"
+    },
+    "data": {
+      "not_available": "N.D.",
+      "none": "Pas d'avion détecté !",
+      "undefined": "L'entité configurée ne contient aucune donnée !"
+    }
+  },
+  "popup": {
+    "table": {
+      "head": {
+        "property": "Propriété",
+        "value": "Valeur"
+      }
+    }
+  },
+  "track": {
+    "short": {
+      "n": "N",
+      "nne": "NNE",
+      "ne": "NE",
+      "ene": "ENE",
+      "e": "E",
+      "ese": "ESE",
+      "se": "SE",
+      "sse": "SSE",
+      "s": "S",
+      "ssw": "SSO",
+      "sw": "SO",
+      "wsw": "OSO",
+      "w": "W",
+      "wnw": "ONO",
+      "nw": "NO",
+      "nnw": "NNO"
+    },
+    "long": {
+      "n": "Nord",
+      "nne": "Nord-nord-est",
+      "ne": "Nord-est",
+      "ene": "Est-nord-est",
+      "e": "Est",
+      "ese": "Est-sud-est",
+      "se": "Sud-est",
+      "sse": "Sud-sud-est",
+      "s": "Sud",
+      "ssw": "Sud-sud-ouest",
+      "sw": "Sud-ouest",
+      "wsw": "Ouest-sud-ouest",
+      "w": "Ouest",
+      "wnw": "Ouest-nord-ouest",
+      "nw": "Nord-ouest",
+      "nnw": "Nord-nord-ouest"
+    }
+  }
+}
