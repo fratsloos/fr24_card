@@ -36,8 +36,9 @@ export default class Popup {
           if (json.photos.length > 0) {
             // Show popup with photo
             popup.photo = json.photos[0];
-            popup.show();
           }
+
+          popup.show();
         });
     } else {
       // Show popup without photo

@@ -168,20 +168,20 @@ class FR24Card extends LitElement {
       let add = true;
 
       // Check on old messages
-      if (this.config.hide.old_messages !== false && aircraft.seen > 30) {
+      if (this.config.hide?.old_messages !== false && aircraft.seen > 30) {
         add = false;
       }
 
       // Check on ground vehicles
       if (
-        this.config.hide.ground_vehicles !== false &&
+        this.config.hide?.ground_vehicles !== false &&
         aircraft.altitude === "ground"
       ) {
         add = false;
       }
 
       // Check on empty values for defined columns
-      if (this.config.hide.empty.length > 0) {
+      if (this.config.hide?.empty.length > 0) {
         for (let i = 0; i < this.config.hide.empty.length; i++) {
           let column = this.config.hide.empty[i];
 
