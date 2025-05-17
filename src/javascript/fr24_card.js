@@ -40,6 +40,7 @@ class FR24Card extends LitElement {
 
     // Set lang
     this._lang = new Lang(this.config, this.hass);
+    console.log(this.lang);
 
     if (this.config.entity) {
       // Parse aircrafts

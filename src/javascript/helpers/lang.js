@@ -4,6 +4,7 @@ import fi from "../lang/fi.json";
 import nl from "../lang/nl.json";
 import pl from "../lang/pl.json";
 import sl from "../lang/sl.json";
+import zhTw from "../lang/zh-tw.json";
 
 export default class Lang {
   constructor(config, hass) {
@@ -36,6 +37,9 @@ export default class Lang {
           break;
         case "sl":
           this.content = sl;
+          break;
+        case "zh-tw":
+          this.content = zhTw;
           break;
       }
     }
