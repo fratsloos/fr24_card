@@ -1,6 +1,7 @@
 import de from "../lang/de.json";
 import en from "../lang/en.json";
 import fi from "../lang/fi.json";
+import fr from "../lang/fr.json";
 import nl from "../lang/nl.json";
 import pl from "../lang/pl.json";
 import sl from "../lang/sl.json";
@@ -28,6 +29,9 @@ export default class Lang {
           break;
         case "fi":
           this.content = fi;
+          break;
+        case "fr":
+          this.content = fr;
           break;
         case "nl":
           this.content = nl;
