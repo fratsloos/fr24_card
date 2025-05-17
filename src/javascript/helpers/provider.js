@@ -3,8 +3,7 @@ export default class Provider {
   urlAdbsExchange = "https://globe.adsbexchange.com/?icao=%hex%";
   urlFlightAware = "https://flightaware.com/live/modes/%hex%/redirect";
   urlFlightRadar24 = "https://www.flightradar24.com/%flight%";
-  urlOpenskyNetwork =
-    "https://opensky-network.org/aircraft-profile?icao24=%hex%";
+  urlOpenskyNetwork = "https://map.opensky-network.org/?icao=%hex%";
   urlPlaneFinder = "https://planefinder.net/flight/%flight%";
 
   constructor(config, hass) {
